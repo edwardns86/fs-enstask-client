@@ -41,7 +41,7 @@ const Login = (props) => {
     <Button block size="lg" variant="success" type="submit">
         Login
     </Button>
-    <Button block size="lg" variant="danger"  >Register</Button>
+    <Button block size="lg" variant="danger" href='/register' >Register</Button>
     
 </Form>
     )
