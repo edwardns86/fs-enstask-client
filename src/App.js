@@ -12,35 +12,33 @@ import './App.css';
 
 
 function App() {
-  const [user, setUser] = useState({}
+  const [user, setUser] = useState(null)
     // token: existingToken || accessToken,
-  );
+  ;
 
   useEffect(() => {
-    if (!user.email) {
-      const existingToken = sessionStorage.getItem("token");
-      const accessToken =
-        window.location.search.split("=")[0] === "?api_key"
-          ? window.location.search.split("=")[1]
-          : null;
+    getUserInfo();
+    window.history.replaceState({}, document.title, '/');
+    // if (!user.email) {
+    //   const existingToken = localStorage.getItem("token");
+    //   // const accessToken =
+    //   //   window.location.search.split("=")[0] === "?api_key"
+    //   //     ? window.location.search.split("=")[1]
+    //   //     : null;
 
-      if (accessToken) {
-        sessionStorage.setItem("token", accessToken);
-        console.log("accesstoken", accessToken)
-      }
+    //   if (accessToken) {
+    //     localStorage.setItem("token", accessToken);
+    //     console.log("accesstoken", accessToken)
+    //   }
 
-      if (existingToken) {
-        console.log("existingtoken", existingToken)
-        setUser({ token: existingToken });
-        getUserInfo(existingToken)
-      }
-    }
+    //   if (existingToken) {
+    //     console.log("existingtoken", existingToken)
+    //     setUser({ token: existingToken });
+    //     getUserInfo(existingToken)
+    //   }
+    // }
   }, [])
   console.log("user", user)
-
-
-
-
 
   // useEffect(() => {
   //   getUserInfo()
@@ -48,54 +46,23 @@ function App() {
 
   // }, [])
 
-  // const doLogOut = async () => {
-  //   const resp = await fetch("https://127.0.0.1:5000/logout", {
-  //       method: "GET",
-  //       headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Token ${user.token}`
-  //       },
-  //   })
-  //   if (resp.ok) {
-  //       const data = await resp.json()
-  //       if (data.success === true) {
-  //           sessionStorage.clear('token')
-  //           setUser({
-  //               user: null,
-  //               token: null
-  //           })
-  //       }
-
-  //   }
-  // }
-
-  const RegisterUser = async (token, user) => {
-
-    const resp = await fetch("https://127.0.0.1:5000/register", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`
-      },
-      body: JSON.stringify({
-        name : user.name,
-        surname: user.surname,
-        email: user.email,
-        password: user.password
-      })
+  const doLogOut = async ( ) => {
+    const resp = await fetch("https://127.0.0.1:5000/logout", {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${localStorage.getItem('token')}`
+        }
     })
-    
     if (resp.ok) {
-      const data = await resp.json()
-      setUser({
-        ...user,
-        user_id: data.user_id,
-        user_name: data.user_name,
-        
-      })
+        const data = await resp.json()
+        if (data.success) {
+          localStorage.clear('token')
+            setUser(null)
+        }
 
     }
   }
+
   console.log('user in function', user)
 
   // postScore = async (wpm, elapsed) => { Using as example of post request 
@@ -125,38 +92,40 @@ function App() {
   //   }
   // };
 
-  const getUserInfo = async (token) => {
-
+  const getUserInfo = async () => {
+    const existingToken = localStorage.getItem("token");
+    const accessToken =
+        window.location.search.split("=")[0] === "?api_key"
+          ? window.location.search.split("=")[1]
+          : null;
+    console.log(existingToken, accessToken)
     const resp = await fetch("https://127.0.0.1:5000/getuserinfo", {
-      method: "GET",
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Token ${token}`
-      },
+        Authorization: `Token ${existingToken || accessToken}`
+      }
     })
     console.log('edoieieoiei', resp)
     if (resp.ok) {
       const data = await resp.json()
-      setUser({
-        ...user,
-        user_id: data.user_id,
-        user_name: data.user_name
-
-      })
-
+      localStorage.setItem("token", data.token)
+      setUser(data.user)
+    } else {
+      localStorage.clear("token")
     }
   }
   console.log('user in function', user)
 
 
-  if (!user.user_name) {
+  if (!user) {
     return (
       <>
       <Row style={{ height: '90vh' }}>
         <Col className="login col-6" >
         <SignIn 
         user={user}
-        setUser={setUser}/>
+        setUser={setUser}
+        />
         {/* <Button className="fbloginbt"variant="primary" size="lg"  onClick={() => window.location.replace('https://127.0.0.1:5000/login/facebook')}> Login with Facebook</Button> */}
       </Col>
       </Row>
@@ -169,7 +138,7 @@ function App() {
 
       <Navi
         user={user}
-      // doLogOut={doLogOut}
+        doLogOut={doLogOut}
       />
       {/* <Button onClick={() => window.location.replace('https://127.0.0.1:5000/logout')}> Logout</Button>  Test completed and it works can remove later */}
       <Row style={{ height: '90vh' }}>

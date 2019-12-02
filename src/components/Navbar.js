@@ -16,7 +16,7 @@ const Navi = (props) => {
                 height="30"
                 className="d-inline-block align-top"
                 alt="logo"
-            />Hi, {props.user.user_name} </Navbar.Brand>
+            />Hi, {props.user.name} </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className=" ml-auto">
@@ -31,7 +31,8 @@ const Navi = (props) => {
                         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={() => window.location.replace('https://127.0.0.1:5000/logout')} >Logout </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => props.doLogOut(props.user.user_id)} >Logout function </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => window.location.replace('https://127.0.0.1:5000/logout')}> Logout window style</NavDropdown.Item>
                         {/* <NavDropdown.Item onclick={props.doLogOut()} href="#action/3.4">Logout</NavDropdown.Item> */}
                         {/* <NavDropdown.Item onclick={props.getUserInfo()} href="/">Login</NavDropdown.Item> */}
                     </NavDropdown>

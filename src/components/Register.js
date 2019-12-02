@@ -4,16 +4,36 @@ import { Row, Col, Form, Button} from 'react-bootstrap';
 
 const Register = (props) => {
     // [props.user, props.setUser] = useState({})
-
-    const handleOnChange = (event) => {
+    const [input,setInput] = useState({})
+    const handleOnChange = (e) => {
         console.log(props.user)
-        props.setUser({
-            ...props.user,
-            [event.target.name] : event.target.value
+        setInput({ ...input,
+            [e.target.name]:e.target.value
         })
     }
+
+
+
+    const registerUser = async (e) => {
+        console.log('object', input)
+        e.preventDefault()
+        const resp = await fetch("https://127.0.0.1:5000/register", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(input)
+        })
+        
+        const data = await resp.json()
+        if (data.success) {
+            //push to login page
+        }
+      }
+
+
     return (
-<Form onChange={(e) => handleOnChange(e)} >
+<Form onChange={(e) => handleOnChange(e)}  onSubmit={(e) => registerUser(e)}>
     <h1>Register</h1>
     <img className="mb-4" src="/client/src/images/Logo.png'" alt="" width="72" height="72" />
     <Row>
@@ -44,7 +64,7 @@ const Register = (props) => {
     </Col>
     </Row>
     <Button block size="lg" variant="success" type="submit">
-        Register
+        Register !!!!!!!
     </Button>
     <Button block size="lg" variant="danger" href="/" >Login</Button>
 </Form>
