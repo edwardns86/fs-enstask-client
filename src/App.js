@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom'
 import Navi from './components/Navbar';
+import Home from './pages/Home';
+import ProjectDash from './pages/ProjectsDash'
 import Calendar from './components/Calendar';
 import Projects from './components/HomeProjects';
 import HomeDashboard from './components/HomeDashboard';
@@ -11,35 +13,40 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null)
-  ;
+  const [projects , setProjects] = useState([])
+    ;
 
   useEffect(() => {
     getUserInfo();
     window.history.replaceState({}, document.title, '/');
   }, [])
 
-  const doLogOut = async ( ) => {
+  useEffect(() => {
+    getProjects();
+  }, [])
+
+  const doLogOut = async () => {
     const resp = await fetch("https://127.0.0.1:5000/logout", {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Token ${localStorage.getItem('token')}`
-        }
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${localStorage.getItem('token')}`
+      }
     })
     if (resp.ok) {
-        const data = await resp.json()
-        if (data.success) {
-          localStorage.clear('token')
-            setUser(null)
-        }
+      const data = await resp.json()
+      if (data.success) {
+        localStorage.clear('token')
+        setUser(null)
+      }
     }
   }
 
   const getUserInfo = async () => {
     const existingToken = localStorage.getItem("token");
     const accessToken =
-        window.location.search.split("=")[0] === "?api_key"
-          ? window.location.search.split("=")[1]
-          : null;
+      window.location.search.split("=")[0] === "?api_key"
+        ? window.location.search.split("=")[1]
+        : null;
     const resp = await fetch("https://127.0.0.1:5000/getuserinfo", {
       headers: {
         'Content-Type': 'application/json',
@@ -55,21 +62,28 @@ function App() {
       localStorage.clear("token")
     }
   }
-  
 
+  const getProjects = async () => {
+    const resp = await fetch("https://127.0.0.1:5000/getprojects") 
+    if (resp.ok) {
+      const data = await resp.json()
+      console.log(data)
+      setProjects(data)
+    }
+  }
 
   if (!user) {
     return (
-      <>
-      <Row style={{ height: '90vh' }}>
-        <Col className="login col-6" >
-        <SignIn 
-        user={user}
-        setUser={setUser}
-        />
-      </Col>
-      </Row>
-      </>
+      <div className="logindiv" >
+        <Row style={{ height: '100vh',}}>
+          <Col className="login col-6" >
+            <SignIn
+              user={user}
+              setUser={setUser}
+            />
+          </Col>
+        </Row>
+      </ div>
     )
   }
   return (
@@ -78,10 +92,16 @@ function App() {
         user={user}
         doLogOut={doLogOut}
       />
+      {/* <Switch>
+        <Route exact path='/' render={(props) => <Home {...props} />} />
+        <Route path = '/projects/{project.title}' component={ProjectDash} />
+      </Switch> */}
+
       <Row style={{ height: '90vh' }}>
         <Col className='projects' md={2}>
-          <Projects 
-          user={user}
+          <Projects
+            user={user}
+            projects={projects}
           />
         </Col>
         <Col md='10'>
@@ -92,7 +112,6 @@ function App() {
                 <Route path='/stats' component={HomeDashboard} />
               </Col>
             </Switch >
-
             <Col className='home-task-feed' md={4}>
               <h1>User Tasks </h1>
               <hr />
@@ -102,12 +121,10 @@ function App() {
               <h2> Due this Week </h2>
               <hr />
               <p>Show current user due tasks and any uncompleted highlighted</p>
-
             </Col>
           </Row>
         </Col>
       </Row>
-
     </>
   );
 }

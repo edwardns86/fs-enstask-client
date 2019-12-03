@@ -3,14 +3,14 @@ App {
   margin:0px;
   padding:0px;
   display: flex;
+  background-color: #004CB6;
+  color: #E0F1FF;
 }
 
-
-
-
 .projects {
-background-color: pink;
+background-color: #004CB6;
 text-align: center;
+color:white;
 
 }
 
@@ -21,7 +21,6 @@ text-align: center;
 .home-task-feed {
 background-color: lightseagreen;
 text-align: center;
-
 }
 
 .snapshot {
@@ -30,17 +29,44 @@ text-align: center;
 
 }
 
+.logindiv {
+  background-color: #004CB6;
+}
+
 .login {
-  background-color: lightcyan;
-  background-image: url('/client/src/images/Logo.png');
+  background-color: #95C595;
   justify-content: center;
   margin: auto;
   padding: 40px;
-  border-radius: 5%;
+  border-radius: 10px;
 }
 
 .projectform {
   padding: 20px;
+}
+
+.list {
+  list-style-type: none;
+  background-color: rgba(149, 197, 149, 0.3);
+  /* border: 1px solid black; */
+  margin:10px;
+  padding:10px;
+  border-radius:20px;
+
+}
+
+.listitem {
+  border: 1px solid #95C595;
+  border-radius:20px;
+  margin: 4px;
+  padding: 2px;
+  font-variant-caps: all-small-caps;
+}
+
+.listitem:hover {
+  border: 1px solid white;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 

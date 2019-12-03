@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlusCircle, FaFilter } from 'react-icons/fa';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col , ListGroup } from 'react-bootstrap'
 
 const Projects = (props) => {
+
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
-        
+
         setInput({
             ...input,
             [e.target.name]: e.target.value
@@ -18,17 +19,17 @@ const Projects = (props) => {
     const handleSubmit = (e) => {
         const form = e.currentTarget;
         console.log('form.checkValidity()', form.checkValidity())
-        console.log('input',input)
+        console.log('input', input)
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
             setValidated(true);
-            console.log('e-target',e.target.title.value )
+            console.log('e-target', e.target.title.value)
             setInput({
-                title: e.target.title.value ,
-                description: e.target.description.value ,
-                startdate: e.target.startdate.value ,
-                enddate: e.target.enddate.value ,
+                title: e.target.title.value,
+                description: e.target.description.value,
+                startdate: e.target.startdate.value,
+                enddate: e.target.enddate.value,
             })
             return
         }
@@ -36,7 +37,7 @@ const Projects = (props) => {
         return (createProject(e), handleClose())
     }
     const createProject = async (e) => {
-        console.log('input in create project',input)
+        console.log('input in create project', input)
         const form = e.currentTarget;
         console.log('form.checkValidity()', form.checkValidity())
         if (form.checkValidity() === false) {
@@ -109,8 +110,12 @@ const Projects = (props) => {
                 </Form>
             </Modal>
             <hr />
-            
-            <p>Display projects here in a list - default open projects</p>
+            <ul className="list" variant="flush"> 
+                {props.projects.map((project) => (
+                    <li className="listitem"  > {project.title} </li>
+                )
+                )}
+            </ul>
         </>
     );
 }
