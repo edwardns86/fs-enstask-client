@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaPlusCircle, FaFilter } from 'react-icons/fa';
-import { Modal, Button, Form, Row, Col , ListGroup } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import {Redirect, useHistory} from 'react-router-dom'
 
 const Projects = (props) => {
-
+    const history = useHistory()
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
+    const [currentProject, setCurrentProject] = useState({})
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
@@ -37,9 +40,9 @@ const Projects = (props) => {
         return (createProject(e), handleClose())
     }
     const createProject = async (e) => {
-        console.log('input in create project', input)
+
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
+
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -49,7 +52,8 @@ const Projects = (props) => {
         const resp = await fetch("https://127.0.0.1:5000/newproject", {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(input)
         })
@@ -61,7 +65,8 @@ const Projects = (props) => {
                 startdate: null,
                 enddate: null,
             })
-            setValidated(false)  //push to project view wit            h its done, todo, doing etc 
+            setValidated(false)
+            props.getProjects()
         }
     }
 
@@ -86,7 +91,8 @@ const Projects = (props) => {
                     </Form.Group>
 
                     <Form.Group controlId="formProjectDescription">
-                        <Form.Control name="description" type="text" placeholder="Describe The Project" />
+                        <Form.Control required name="description" type="text" placeholder="Describe The Project" />
+                        <Form.Control.Feedback type="invalid">Every project needs a description!</Form.Control.Feedback>
                     </Form.Group>
                     <Row>
                         <Col>
@@ -110,9 +116,9 @@ const Projects = (props) => {
                 </Form>
             </Modal>
             <hr />
-            <ul className="list" variant="flush"> 
+            <ul className="list" variant="flush">
                 {props.projects.map((project) => (
-                    <li className="listitem"  > {project.title} </li>
+                    <li className="listitem" onClick={() => history.push('/project/'+project.id)}> {project.title} </li>
                 )
                 )}
             </ul>

@@ -3,26 +3,20 @@ import { Switch, Route } from 'react-router-dom'
 import Navi from './components/Navbar';
 import Home from './pages/Home';
 import ProjectDash from './pages/ProjectsDash'
-import Calendar from './components/Calendar';
-import Projects from './components/HomeProjects';
-import HomeDashboard from './components/HomeDashboard';
 import SignIn from './pages/SignIn';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import './App.css';
 
 
 function App() {
   const [user, setUser] = useState(null)
-  const [projects , setProjects] = useState([])
+  const [currentProject, setCurrentProject] = useState({})
+  // const [projects , setProjects] = useState([])
     ;
 
   useEffect(() => {
     getUserInfo();
-    window.history.replaceState({}, document.title, '/');
-  }, [])
-
-  useEffect(() => {
-    getProjects();
+    window.history.replaceState({}, document.title, window.location.pathname);
   }, [])
 
   const doLogOut = async () => {
@@ -63,15 +57,6 @@ function App() {
     }
   }
 
-  const getProjects = async () => {
-    const resp = await fetch("https://127.0.0.1:5000/getprojects") 
-    if (resp.ok) {
-      const data = await resp.json()
-      console.log(data)
-      setProjects(data)
-    }
-  }
-
   if (!user) {
     return (
       <div className="logindiv" >
@@ -86,45 +71,42 @@ function App() {
       </ div>
     )
   }
+
+  // const projectPage = async (id) => {
+  //   console.log('test', id)
+  //   const resp = await fetch(`https://127.0.0.1:5000/project/${id}`, {
+  //       headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Token ${localStorage.getItem('token')}`
+  //       }
+  //   })
+  //   if (resp.ok) {
+  //       const data = await resp.json()
+  //       if (data.success) {
+  //           console.log('data', data)
+  //           setCurrentProject(data)
+  //           const url = `https://localhost:3000/project/${id}`
+  //           window.location.href = url;
+
+  //       }
+  //       console.log('data2', data)
+
+        // const url = `https://localhost:3000/project/${id}`
+        // window.location.href = url;
+//     }
+// }
+
   return (
     <>
       <Navi
         user={user}
         doLogOut={doLogOut}
       />
-      {/* <Switch>
-        <Route exact path='/' render={(props) => <Home {...props} />} />
-        <Route path = '/projects/{project.title}' component={ProjectDash} />
-      </Switch> */}
+      <Switch>
+        <Route exact path='/' render={() => <Home />} />
+        <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash {...projectPage} />} />
+      </Switch>    
 
-      <Row style={{ height: '90vh' }}>
-        <Col className='projects' md={2}>
-          <Projects
-            user={user}
-            projects={projects}
-          />
-        </Col>
-        <Col md='10'>
-          <Row style={{ height: '100vh' }}>
-            <Switch>
-              <Col className='m-0 p-0' md={8}>
-                <Route exact path='/' component={Calendar} />
-                <Route path='/stats' component={HomeDashboard} />
-              </Col>
-            </Switch >
-            <Col className='home-task-feed' md={4}>
-              <h1>User Tasks </h1>
-              <hr />
-              <h2>CheckList</h2>
-              <hr />
-              <p> Create quick to dos and which can also become tasks </p>
-              <h2> Due this Week </h2>
-              <hr />
-              <p>Show current user due tasks and any uncompleted highlighted</p>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
     </>
   );
 }

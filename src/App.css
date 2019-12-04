@@ -16,11 +16,13 @@ color:white;
 
 .navbar {
   margin:0px;
+
 }
 
 .home-task-feed {
 background-color: lightseagreen;
 text-align: center;
+
 }
 
 .snapshot {
@@ -41,8 +43,14 @@ text-align: center;
   border-radius: 10px;
 }
 
-.projectform {
+.projectform, .taskform {
   padding: 20px;
+}
+
+.title {
+
+  text-align: center;
+  width: 100vw;
 }
 
 .list {
@@ -54,6 +62,8 @@ text-align: center;
   border-radius:20px;
 
 }
+
+/* h3 {text-align: center;} */
 
 .listitem {
   border: 1px solid #95C595;

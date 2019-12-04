@@ -1,31 +1,45 @@
-import React , {useEffect} from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Calendar from '../components/Calendar';
 import Projects from '../components/HomeProjects';
-import HomeDashboard from '../components/HomeDashboard';
-import { Switch, Route } from 'react-router-dom'
+
 
 const Home = (props) => {
+    const [projects, setProjects] = useState([])
     useEffect(() => {
-        props.getProjects();
+        getProjects();
     }, [])
+
+    const getProjects = async () => {
+        const resp = await fetch("https://127.0.0.1:5000/getprojects", {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+        if (resp.ok) {
+            const data = await resp.json()
+            console.log(data)
+            setProjects(data)
+        }
+    }
+
     return (
         <>
-            <Row style={{ height: '90vh' }}>
+
+            <Row className='m-0' style={{ height: '90vh' }}>
                 <Col className='projects' md={2}>
-                    <Projects
+                <Projects
                         user={props.user}
-                        projects={props.projects}
+                        projects={projects}
+                        getProjects={getProjects}
                     />
                 </Col>
                 <Col md='10'>
                     <Row style={{ height: '100vh' }}>
-                        <Switch>
-                            <Col className='m-0 p-0' md={8}>
-                                <Route exact path='/' component={Calendar} />
-                                <Route path='/stats' component={HomeDashboard} />
-                            </Col>
-                        </Switch >
+                        <Col className='m-0 p-0' md={8}>
+                            <Calendar />
+                        </Col>
                         <Col className='home-task-feed' md={4}>
                             <h1>User Tasks </h1>
                             <hr />
@@ -39,6 +53,7 @@ const Home = (props) => {
                     </Row>
                 </Col>
             </Row>
+
         </>
     );
 }
