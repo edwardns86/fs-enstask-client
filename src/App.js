@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useHistory } from 'react-router-dom'
 import Navi from './components/Navbar';
 import Home from './pages/Home';
 import ProjectDash from './pages/ProjectsDash'
@@ -10,8 +10,7 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null)
-  const [currentProject, setCurrentProject] = useState({})
-  // const [projects , setProjects] = useState([])
+  const history = useHistory()
     ;
 
   useEffect(() => {
@@ -32,6 +31,7 @@ function App() {
         localStorage.clear('token')
         setUser(null)
       }
+    history.push("/")
     }
   }
 
@@ -71,30 +71,6 @@ function App() {
       </ div>
     )
   }
-
-  // const projectPage = async (id) => {
-  //   console.log('test', id)
-  //   const resp = await fetch(`https://127.0.0.1:5000/project/${id}`, {
-  //       headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Token ${localStorage.getItem('token')}`
-  //       }
-  //   })
-  //   if (resp.ok) {
-  //       const data = await resp.json()
-  //       if (data.success) {
-  //           console.log('data', data)
-  //           setCurrentProject(data)
-  //           const url = `https://localhost:3000/project/${id}`
-  //           window.location.href = url;
-
-  //       }
-  //       console.log('data2', data)
-
-        // const url = `https://localhost:3000/project/${id}`
-        // window.location.href = url;
-//     }
-// }
 
   return (
     <>

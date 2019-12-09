@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { FaPlusCircle, FaFilter } from 'react-icons/fa';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
-import {Redirect, useHistory} from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const Projects = (props) => {
     const history = useHistory()
@@ -9,6 +12,9 @@ const Projects = (props) => {
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
     const [currentProject, setCurrentProject] = useState({})
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -31,8 +37,8 @@ const Projects = (props) => {
             setInput({
                 title: e.target.title.value,
                 description: e.target.description.value,
-                startdate: e.target.startdate.value,
-                enddate: e.target.enddate.value,
+                startdate: startDate,
+                enddate: endDate
             })
             return
         }
@@ -74,9 +80,17 @@ const Projects = (props) => {
         <>
             <h1>Projects</h1>
             <h6>  <FaFilter /></h6>
+            <hr />
+            <ul className="list" variant="flush">
+                {props.projects.map((project) => (
+                    <li className="listitem" onClick={() => history.push('/project/' + project.id)}> {project.title} </li>
+                )
+                )}
+            </ul>
             <Button variant="primary" onClick={handleShow}>
                 <FaPlusCircle /> Create a Project
             </Button>
+
             <Modal
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
@@ -98,33 +112,36 @@ const Projects = (props) => {
                         <Col>
                             <Form.Group controlId="formProjectStart">
                                 <Form.Label>Project Start Date</Form.Label>
-                                <Form.Control required name="startdate" type="date" placeholder="Start Date" />
-                                <Form.Control.Feedback type="invalid">Every project needs a startdate</Form.Control.Feedback>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={date => setStartDate(date)}
+                                    selectsStart
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                />
                             </Form.Group>
                         </Col>
                         <Col>
                             <Form.Group controlId="formProjectEnd">
                                 <Form.Label>Project Deadline</Form.Label>
-                                <Form.Control required name="enddate" type="date" placeholder="End Date" />
-                                <Form.Control.Feedback type="invalid">Every project needs a deadline</Form.Control.Feedback>
+                                <DatePicker
+                                    selected={endDate}
+                                    onChange={date => setEndDate(date)}
+                                    selectsEnd
+                                    endDate={endDate}
+                                    minDate={startDate}
+                                />
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Button block size="lg" variant="success" type="submit"  >
-                        Create
+                        <Button block size="lg" variant="success" type="submit"  >
+                            Create
                     </Button>
                 </Form>
             </Modal>
-            <hr />
-            <ul className="list" variant="flush">
-                {props.projects.map((project) => (
-                    <li className="listitem" onClick={() => history.push('/project/'+project.id)}> {project.title} </li>
-                )
-                )}
-            </ul>
         </>
-    );
-}
-
-export default Projects
-
+            );
+        }
+        
+        export default Projects
+        

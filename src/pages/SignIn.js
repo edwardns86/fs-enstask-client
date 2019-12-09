@@ -9,7 +9,7 @@ const SignIn = (props) => {
         <div className="login-section">
             <Switch>
                 <Route exact path='/' render={(props) => <Login {...props} />} />
-                <Route exact path='/register' render={(props) => <Register {...props} />} />
+                <Route path='/register' render={(props) => <Register {...props} />} />
             </Switch>
             <Button className="fbloginbt mt-2" variant="primary" size="lg" block onClick={() => window.location.replace('https://127.0.0.1:5000/login/facebook')}> Login with Facebook</Button>
         </div >

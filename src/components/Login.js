@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 
 
 const Login = (props) => {
+    const [user, setUser] = useState({})
 
     const [input,setInput] = useState({})
     const handleOnChange = (e) => {
@@ -24,14 +25,21 @@ const Login = (props) => {
         const data = await res.json()
         if (data.success){
             localStorage.setItem('token', data.token)
-            props.setUser(data.user)
-            // navigate user.
+            setUser(data.user)
+            window.location.replace('/')
         }
     }
 
     return (
 <Form onChange={e=>handleOnChange(e)} onSubmit={(e)=>login(e)}>
     <h1>Login</h1>
+    <img
+                        src="https://i.imgur.com/W9k8Ei6.png"
+                        width="100"
+                        height="100"
+                        className="d-inline-block align-top"
+                        alt="logo"
+                    />
     <Form.Group controlId="formBasicEmail">
         <Form.Control type="email" name="email" placeholder="Enter email" />
     </Form.Group>

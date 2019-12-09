@@ -12,8 +12,6 @@ const Register = (props) => {
         })
     }
 
-
-
     const registerUser = async (e) => {
         console.log('object', input)
         e.preventDefault()
@@ -27,7 +25,7 @@ const Register = (props) => {
         
         const data = await resp.json()
         if (data.success) {
-            //push to login page
+            window.location.replace('/')
         }
       }
 
@@ -35,7 +33,13 @@ const Register = (props) => {
     return (
 <Form onChange={(e) => handleOnChange(e)}  onSubmit={(e) => registerUser(e)}>
     <h1>Register</h1>
-    <img className="mb-4" src="/client/src/images/Logo.png'" alt="" width="72" height="72" />
+    <img
+                        src="https://i.imgur.com/W9k8Ei6.png"
+                        width="100"
+                        height="100"
+                        className="d-inline-block align-top"
+                        alt="logo"
+                    />
     <Row>
     <Col>
     <Form.Group controlId="formFirstname">

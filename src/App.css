@@ -22,7 +22,10 @@ color:white;
 .home-task-feed {
 background-color: lightseagreen;
 text-align: center;
+}
 
+.icon {
+  justify-content: right ;
 }
 
 .snapshot {
@@ -51,6 +54,11 @@ text-align: center;
 
   text-align: center;
   width: 100vw;
+}
+.test{
+  color:blueviolet;
+  background-color: teal;
+  font-size: 3rem;
 }
 
 .list {
