@@ -3,6 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 import Navi from './components/Navbar';
 import Home from './pages/Home';
 import ProjectDash from './pages/ProjectsDash'
+import UserTasks from './pages/UserTasks'
 import SignIn from './pages/SignIn';
 import { Row, Col } from 'react-bootstrap';
 import './App.css';
@@ -98,12 +99,18 @@ function App() {
       />
       <Switch>
         <Route exact path='/' render={() => <Home 
-        user={user}
-        
-        />} />
+        user={user} />} />
+
         <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash 
         allUsers={allUsers}
         {...projectPage} />} />
+
+        <Route path = '/mytasks' render={() => <UserTasks 
+        user={user}
+        allUsers={allUsers}
+        />} 
+        />
+
       </Switch>    
 
     </>

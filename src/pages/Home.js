@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Card } from 'react-bootstrap';
+import { Row, Col, Modal, Card, Container } from 'react-bootstrap';
 import Calendar from '../components/Calendar';
 import Projects from '../components/HomeProjects';
 import StyledTitleCard from '../components/StyledTitleCard';
+import ColHeader from '../components/ColHeader'
 import Moment from 'react-moment';
-import DatePicker from "react-datepicker";
-import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
-import { FaEdit } from 'react-icons/fa';
+
+import { IoIosGlasses} from "react-icons/io";
 
 
 const moment = require('moment');
 moment().format();
-
 
 const Home = (props) => {
     const [projects, setProjects] = useState([])
@@ -51,7 +50,7 @@ const Home = (props) => {
         })
         if (resp.ok) {
             const data = await resp.json()
-            setTasks(data)
+            setTasks(data.tasks)
         }
     }
 
@@ -77,7 +76,7 @@ const Home = (props) => {
 
     const renderThisWeek = (tasks) => {
         return tasks.map(task => {
-            if (new Date(task.enddate) < STW._d) return (<>
+            if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>
                 <StyledTitleCard
                     task={task}
                     handleClick={() => handleClick(task)}
@@ -117,29 +116,30 @@ const Home = (props) => {
     return (
         <>
             <Row className='m-0' style={{ height: '90vh' }}>
-                <Col className='projects' md={2}>
+                <Col className='col-3 m-0 p-0 projects ' >
                     <Projects
                         user={props.user}
                         projects={projects}
                         getProjects={getProjects}
                     />
                 </Col>
-                <Col md='10'>
-                    <Row style={{ height: '100vh' }}>
-                        <Col className='m-0 p-0' md={8}>
-                            <Calendar />
-                        </Col>
-                        <Col className='home-task-feed' md={4}>
-                            <h1>Tasks </h1>
-                            
-                            <hr />
-                            <h2>CheckList</h2>
-                            <hr />
-                            <p> Create quick to dos and which can also become tasks </p>
-                            <h2> Due this Week </h2>
-                            <hr />
-                            {renderThisWeek(tasks)}
-                            {/* {tasks.map(task => {
+
+                <Col className='m-0 p-0 col-6' >
+                    <Calendar />
+                </Col>
+                <Col className='m-0 p-0 home-task-feed col-3' >
+                    <Container>
+                    <h1>Tasks </h1>
+
+                    <hr />
+                    <h2>CheckList</h2>
+                    <hr />
+                    <p> Create quick to dos and which can also become tasks </p>
+                    <h2> Due this Week </h2>
+                    <hr />
+                    <ColHeader />
+                    {renderThisWeek(tasks)}
+                    {/* {tasks.map(task => {
                                 return (
                                      // onClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id)} 
                                     <Card className="task-card m-2 text-center">
@@ -147,9 +147,8 @@ const Home = (props) => {
                                     className="p-2" >{task.title}</Card.Title>
                                     </Card>
                                 )})} */}
-                            <p>Show current user due tasks and any uncompleted highlighted</p>
-                        </Col>
-                    </Row>
+                    <p>Show current user due tasks and any uncompleted highlighted</p>
+                    </Container>
                 </Col>
             </Row>
             <Modal

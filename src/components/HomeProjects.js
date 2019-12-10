@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaPlusCircle, FaFilter } from 'react-icons/fa';
-import { Modal, Button, Form, Row, Col, Card } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col, Card, Container } from 'react-bootstrap'
 import { Redirect, useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker";
+
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -78,24 +79,24 @@ const Projects = (props) => {
     }
 
     return (
-        <>
+        <Container>
             <h1>Projects</h1>
             <h6>  <FaFilter /></h6>
             <hr />
-            <ul className="list" variant="flush">
+            <Button variant="primary" onClick={handleShow}>
+                <FaPlusCircle /> Create a Project
+            </Button>
                 {props.projects.map((project) => (
 
-                    <Card className="task-card m-2 text-center">
-                        <Card.Title
-                            className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Title>
+                    <Card className="task-card  text-center">
+                        <Card.Body
+                            className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Body>
                     </Card>
                     // <li className="listitem" onClick={() => history.push('/project/' + project.id)}> {project.title} </li>
                 )
                 )}
-            </ul>
-            <Button variant="primary" onClick={handleShow}>
-                <FaPlusCircle /> Create a Project
-            </Button>
+            
+            
 
             <Modal
                 size="lg"
@@ -145,7 +146,7 @@ const Projects = (props) => {
                     </Button>
                 </Form>
             </Modal>
-        </>
+        </Container>
     );
 }
 

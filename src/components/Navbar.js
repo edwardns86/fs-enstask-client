@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-
 const Navi = (props) => {
     const k = window.location.pathname
     const pId = window.location.pathname.split("/project/")[1]
@@ -38,8 +37,6 @@ const Navi = (props) => {
     }
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-
-
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -116,7 +113,7 @@ const Navi = (props) => {
                     <NavDropdown className="nav-add-task ml-5 mr-5" title={
                         <span><FaUserCircle /> </span>
                     } id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="#action/3.1">Take to Another View</NavDropdown.Item>
+                        <NavDropdown.Item href="/mytasks">View Your Tasks</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
@@ -125,10 +122,9 @@ const Navi = (props) => {
                     <Nav className=" ml-auto">
                         <Nav.Link className="nav-add-task ml-5" onClick={handleShow} href="#link"><FaPlusCircle /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="/stats"><GoGraph /></Nav.Link>
-                        <Nav.Link className="nav-add-task ml-5" href="/stats"><GoChecklist /></Nav.Link>
+                        <Nav.Link className="nav-add-task ml-5" href="/mytasks"><GoChecklist /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="/"><GoCalendar /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="#link"><GoSearch /></Nav.Link>
-
                     </Nav>
                 </Navbar.Collapse>
             </Navbar >
