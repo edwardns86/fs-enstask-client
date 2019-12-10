@@ -24,7 +24,7 @@ const Navi = (props) => {
     }, [])
 
     const handleClose = () => {
-        getTasks();
+        
         setShow(false)};
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
@@ -82,6 +82,7 @@ const Navi = (props) => {
                 startdate: null,
                 enddate: null,
             })
+            getTasks();
             setValidated(false)  
         }
     }
