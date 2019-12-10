@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Navbar, Nav, NavDropdown, Modal, Button, Form, Row, Col } from 'react-bootstrap';
-import { GoGraph, GoCalendar, GoSearch } from "react-icons/go";
+import { GoGraph, GoCalendar, GoSearch, GoChecklist } from "react-icons/go";
 import { FaHome, FaPlusCircle, FaUserCircle } from 'react-icons/fa';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
+
 const Navi = (props) => {
+    const k = window.location.pathname
+    const pId = window.location.pathname.split("/project/")[1]
+    console.log('===========', pId)
+    // WORK FROM HERE I HAVE THE ID OF A PROJECT FOR CREATING TASKS IN NAVBAR BUT NEED TO GUARD AGAINST null OR inocrrect ID
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
@@ -17,6 +23,7 @@ const Navi = (props) => {
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
 
+
         setInput({
             ...input,
             [e.target.name]: e.target.value,
@@ -26,16 +33,16 @@ const Navi = (props) => {
     }
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
+
 
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
             setValidated(true);
-            console.log('e-target', e.target.title.value)
             setInput({
                 title: e.target.title.value,
                 description: e.target.description.value,
+                assigned_id: e.target.assigned_id.value,
                 startdate: startDate,
                 enddate: endDate
             })
@@ -45,9 +52,8 @@ const Navi = (props) => {
         return (createTask(e), handleClose())
     }
     const createTask = async (e) => {
-        console.log('input in create task', input)
+    
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -67,21 +73,17 @@ const Navi = (props) => {
             setInput({
                 title: '',
                 description: '',
+                assigned_id: null,
                 startdate: null,
                 enddate: null,
             })
-            setValidated(false)  //push to project view wit            h its done, todo, doing etc 
+            setValidated(false)  
         }
     }
 
-    console.log("sd and ed",startDate, endDate)
-    console.log('input', input)
     return (
         <>
-            
-
             <Navbar md={12} className='navbar' bg="light" expand="lg" >
-
                 <Navbar.Brand href="/"><img
                     src="https://i.imgur.com/W9k8Ei6.png"
                     width="30"
@@ -104,6 +106,7 @@ const Navi = (props) => {
                     <Nav className=" ml-auto">
                         <Nav.Link className="nav-add-task ml-5" onClick={handleShow} href="#link"><FaPlusCircle /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="/stats"><GoGraph /></Nav.Link>
+                        <Nav.Link className="nav-add-task ml-5" href="/stats"><GoChecklist /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="/"><GoCalendar /></Nav.Link>
                         <Nav.Link className="nav-add-task ml-5" href="#link"><GoSearch /></Nav.Link>
 
@@ -128,7 +131,7 @@ const Navi = (props) => {
                         <Form.Control name="description" type="text" placeholder="Describe The Task" />
                     </Form.Group>
                     <Row>
-                    <Col>
+                        <Col>
                             <Form.Group controlId="formTaskStart">
                                 <Form.Label>Task Start Date</Form.Label>
                                 <DatePicker
@@ -150,6 +153,18 @@ const Navi = (props) => {
                                     endDate={endDate}
                                     minDate={startDate}
                                 />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group controlId="formAssigned">
+                                <Form.Control required name='assigned_id' as="select"  >
+                                <option disabled selected value="">Assign the task</option>
+                                                {props.allUsers.map(assignee=><option value={assignee.id}>{assignee.name}</option>
+)}
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
                             </Form.Group>
                         </Col>
                     </Row>

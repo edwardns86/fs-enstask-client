@@ -10,13 +10,30 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null)
+  const [allUsers, setAllUsers] = useState([])
   const history = useHistory()
     ;
 
   useEffect(() => {
     getUserInfo();
+    getUsers();
     window.history.replaceState({}, document.title, window.location.pathname);
   }, [])
+
+  const getUsers = async () => {
+    const resp = await fetch("https://127.0.0.1:5000/getusers", {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${localStorage.getItem('token')}`
+        }
+    })
+    if (resp.ok) {
+        const data = await resp.json()
+        console.log('All users',data)
+        setAllUsers(data)
+    }
+}
+
 
   const doLogOut = async () => {
     const resp = await fetch("https://127.0.0.1:5000/logout", {
@@ -77,10 +94,16 @@ function App() {
       <Navi
         user={user}
         doLogOut={doLogOut}
+        allUsers={allUsers}
       />
       <Switch>
-        <Route exact path='/' render={() => <Home />} />
-        <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash {...projectPage} />} />
+        <Route exact path='/' render={() => <Home 
+        user={user}
+        
+        />} />
+        <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash 
+        allUsers={allUsers}
+        {...projectPage} />} />
       </Switch>    
 
     </>

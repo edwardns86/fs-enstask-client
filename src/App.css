@@ -10,13 +10,11 @@ App {
 .projects {
 background-color: #004CB6;
 text-align: center;
-color:white;
-
+color:black;
 }
 
 .navbar {
   margin:0px;
-
 }
 
 .home-task-feed {
@@ -56,9 +54,7 @@ text-align: center;
   width: 100vw;
 }
 .test{
-  color:blueviolet;
-  background-color: teal;
-  font-size: 3rem;
+  font-size: 1.2rem;
 }
 
 .list {
@@ -88,5 +84,11 @@ text-align: center;
 }
 
 
+.task-modal-left {
+  border-right: 1px solid grey;
+}
 
+.taskform{
+  padding: 0px;
+}
 

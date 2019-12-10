@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
-import { FaPlusCircle, FaEdit } from 'react-icons/fa';
+import {
+    FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
+    FaRegLightbulb
+} from 'react-icons/fa';
+import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
+import { FiActivity } from "react-icons/fi";
 import Moment from 'react-moment';
 import DatePicker from "react-datepicker";
- 
+import StyledTitleCard from '../components/StyledTitleCard';
+
 import "react-datepicker/dist/react-datepicker.css";
 
 const ProjectDash = (props) => {
-
+    console.log("props", props)
     const params = useParams()
     const [project, setProject] = useState(null)
     const [tasks, setTasks] = useState([])
@@ -21,20 +27,27 @@ const ProjectDash = (props) => {
     }, [])
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+
+    }
+
     const handleShow = () => {
         setShow(true);
         setStartDate(new Date())
         setEndDate(new Date())
-}
+    }
     const [show2, setShow2] = useState(false);
     const [task, setTask] = useState({})
-    const handleClose2 = () => setShow2(false);
+    const handleClose2 = () => {
+        setShow2(false);
+        setVisible(false);
+    }
     const handleShow2 = () => setShow2(true);
 
     const [visible, setVisible] = useState(false)
 
-    const handleClick = (id, title, description, startdate, enddate) => {
+    const handleClick = (id, title, description, startdate, enddate, status, name, assignee_id) => {
         setStartDate(new Date(startdate))
         setEndDate(new Date(enddate))
         setTask({
@@ -43,19 +56,26 @@ const ProjectDash = (props) => {
             description: description,
             startdate: startdate,
             enddate: enddate,
+            status: status,
+            name: name,
+            assignee_id: assignee_id,
         })
         setInput({
             title: title,
             description: description,
+            status: status,
             startdate: startdate,
-            enddate: enddate
+            enddate: enddate,
+            name: name,
+            assigned_id: assignee_id,
         })
         handleShow2()
     }
 
     const [input, setInput] = useState({
         title: "",
-        description: ""
+        description: "",
+        status: "Open"
     })
     const handleOnChange = (e) => {
         setInput({
@@ -74,7 +94,6 @@ const ProjectDash = (props) => {
             e.preventDefault()
             e.stopPropagation();
             setValidated(true);
-
             setInput({
                 title: e.target.title.value,
                 description: e.target.description.value,
@@ -118,26 +137,21 @@ const ProjectDash = (props) => {
     }
 
     const handleEditSubmit = (e) => {
-        
+
         const form = e.currentTarget;
         console.log('form.checkValidity()', form.checkValidity())
-        
+
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
             setValidated(true);
-            // setInput({
-            //     title: e.target.title.value,
-            //     description: e.target.description.value ,
-            //     startdate: startDate,
-            //     enddate: endDate
-            // })
-            return 
+            return
         }
         e.preventDefault()
         setInput({
             title: e.target.title.value,
-            description: e.target.description.value ,
+            description: e.target.description.value,
+            status: e.target.status.value,
             // startdate: startDate,
             // enddate: endDate
         })
@@ -160,7 +174,7 @@ const ProjectDash = (props) => {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ id: task.id, input , startDate, endDate})
+            body: JSON.stringify({ id: task.id, input, startDate, endDate })
         })
         const data = await resp.json()
         if (data.success) {
@@ -174,8 +188,6 @@ const ProjectDash = (props) => {
             projectPage(params['id'])
         }
     }
-    console.log("starttime endtime ",startDate, endDate)
-    
 
     const projectPage = async (id) => {
         console.log('test', id)
@@ -188,7 +200,7 @@ const ProjectDash = (props) => {
         if (resp.ok) {
             const data = await resp.json()
             if (data.success) {
-                console.log('data', data)
+                console.log('data LOIII ', data)
                 setProject(data.project)
                 if (data.tasks) {
                     setTasks(data.tasks)
@@ -196,7 +208,18 @@ const ProjectDash = (props) => {
             }
         }
     }
-    console.log('object input atm', input)
+    const openTasks = tasks.filter(function (task) {
+        return task.status === "Open";
+    });
+
+    const inProgressTasks = tasks.filter(function (task) {
+        return task.status === "In Progress";
+    });
+
+    const doneTasks = tasks.filter(function (task) {
+        return task.status === "Done";
+    });
+
     if (!project) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
         <div className="spinner-border" role="status">
             <span className="sr-only">Loading...</span>
@@ -208,70 +231,114 @@ const ProjectDash = (props) => {
         if (!visible) {
             return (
                 <>
-                <h1>{task.title}</h1>
-                <h6>{task.description}</h6>
-                <h6>Deadline: <Moment fromNow>{task.enddate}</Moment></h6> 
+                    <Card>
+                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                            <span><IoIosGlasses />{task.name}</span>
+                            <span>{task.status}</span>
+                        </Card.Header>
+                        <Card.Body>
+                            <Row>
+                                <Col className='task-modal-left col-8'>
+                                    <Card.Title>{task.title}</Card.Title>
+                                    <Card.Text>
+                                        {task.description}
+                                    </Card.Text>
+                                    <Button variant="primary">Add a comment</Button>
+                                </Col>
+                                <Col className='col-4'>
+                                    <Card.Text>
+                                        Start Date: <Moment format="DD/MM/YYYY">{task.startdate}</Moment>
+                                        <h6>Deadline: <Moment fromNow>{task.enddate}</Moment></h6>
+                                    </Card.Text>
+
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                    </Card>
                 </>
             )
         }
-        return (
-            <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
 
-                    <Form.Group as={Row} controlId="formPlaintextEmail">
-                        <Form.Label  column sm="2">
-                            Title:
-                        </Form.Label>
-                        <Col sm="10">
-                            <Form.Control required  name="title" className='test' plaintext defaultValue={task.title} />
-                            <Form.Control.Feedback type="invalid">Every task needs a title!</Form.Control.Feedback>
-                        </Col>
-                        <Form.Label column sm="2">
-                            Description:
-                        </Form.Label>
-                        <Col sm="10">
-                            <Form.Control name="description" plaintext defaultValue={task.description} />
-                        </Col>
-                        <Form.Label column sm="2">
-                            Start:
-                        </Form.Label>
-                        <Col>
-                            <Form.Group controlId="formTaskStart">
-                                <Form.Label>Task Start Date</Form.Label>
-                                <DatePicker
-                                    dateFormat="dd/MM/yyyy"
-                                    selected={startDate}
-                                    onChange={date => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    todayButton="Today"
-                                    locale="en-GB"
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group controlId="formTaskEnd">
-                                <Form.Label>Task Deadline</Form.Label>
-                                <DatePicker
-                                    dateFormat="dd/MM/yyyy"
-                                    selected={endDate}
-                                    onChange={date => setEndDate(date)}
-                                    selectsEnd
-                                    endDate={endDate}
-                                    minDate={startDate}
-                                    todayButton="Today"
-                                    locale="en-GB"
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Button variant="outline-primary" type="submit">Save</Button>
-                        <Button variant="outline-primary" onClick={() => setVisible(!visible)}  > Toggle readonly </Button>
-                    
-                    </Form.Group>
-                </Form>
+        const a = ["Open", "In Progress", "Done"].filter(e => e != task.status)
+        // const allUsersFiltered = props.allUsers.filter(name => name != task.name)
+
+        return (
+            <>
+                <Card>
+                    <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
+                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                            <span><IoIosGlasses />{task.name}</span>
+                            <span>{task.status}</span>
+                        </Card.Header>
+                        <Card.Body>
+                            <Row>
+                                <Col className='task-modal-left col-8'>
+                                    <Form.Group controlId="formPlaintextEmail">
+                                        <Form.Control required name="title" className='test h4' plaintext defaultValue={task.title} />
+                                        <Form.Control.Feedback type="invalid">Every task needs a title!</Form.Control.Feedback>
+                                        <Form.Control name="description" as="textarea" plaintext defaultValue={task.description} />
+                                    </Form.Group >
+                                </Col>
+                                <Col className='col-4'>
+                                    <Card.Text>
+                                        <Form.Group controlId="formTaskStart">
+                                            <Form.Label>Task Start Date</Form.Label>
+                                            <DatePicker
+                                                dateFormat="dd/MM/yyyy"
+                                                selected={startDate}
+                                                onChange={date => setStartDate(date)}
+                                                selectsStart
+                                                startDate={startDate}
+                                                endDate={endDate}
+                                                todayButton="Today"
+                                                locale="en-GB"
+                                            />
+                                        </Form.Group>
+                                        <Form.Group controlId="formTaskEnd">
+                                            <Form.Label>Task Deadline</Form.Label>
+                                            <DatePicker
+                                                dateFormat="dd/MM/yyyy"
+                                                selected={endDate}
+                                                onChange={date => setEndDate(date)}
+                                                selectsEnd
+                                                endDate={endDate}
+                                                minDate={startDate}
+                                                todayButton="Today"
+                                                locale="en-GB"
+                                            />
+                                        </Form.Group>
+                                        <Form.Group controlId="formStatus">
+                                            <Form.Label>Status</Form.Label>
+                                            <Form.Control name='status' as="select">
+                                                <option>{task.status}</option>
+                                                {a.map(v => <option>{v}</option>
+                                                )}
+                                            </Form.Control>
+                                        </Form.Group>
+
+                                        <Form.Group controlId="formAssigned">
+                                            <Form.Control required name='assigned_id' as="select"  >
+                                                <option selected value={task.assignee_id}>{task.name}</option>
+                                                {props.allUsers.map(assignee => <option value={assignee.id}>{assignee.name}</option>
+                                                )}
+                                            </Form.Control>
+                                            <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
+                                        </Form.Group>
+
+                                    </Card.Text>
+
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
+
+                    </Form >
+                </Card>
+            </>
         )
     }
-
+    
     return (
         <>
             <div className="projectdash ">
@@ -282,34 +349,51 @@ const ProjectDash = (props) => {
                 </Row>
                 <Row className='m-0' >
                     <Col className='col-4 open text-center'>
-                        <h3>Open</h3>
+                        <h3> <FaRegLightbulb />Open</h3>
                         <Card className=" m-2 text-center">
                             <Card.Title className="p-2" >This is some text within a card body. sdbFHHBDSs If it got really long it wouydld format...</Card.Title>
                         </Card>
-                        {tasks.map((task) => (
-                            <Card className="task-card m-2 text-center">
-                                <Card.Title onClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate)} className="p-2" >{task.title}</Card.Title>
-                            </Card>
-                        )
-                        )}
+                        {openTasks.map((task) => {
+
+                            return (
+                                <StyledTitleCard 
+                                task={task}
+                                handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                                />
+                            )
+                        })}
                         <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button>
                     </Col>
-                    <Col className='col-4 open'>
-                        <h3>In Progress</h3>
+                    <Col className='col-4 open text-center'>
+                        <h3> <FiActivity /> In Progress</h3>
                         <Card className="text-left">
                             <Card.Title className="p-2" >This is some text within a card body. sdbFHHBDSs If it got really long it wouydld format...</Card.Title>
                         </Card>
+                        {inProgressTasks.map((task) => (
+                            <StyledTitleCard 
+                            task={task}
+                            handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                            />
+                        )
+                        )}
 
                     </Col>
-                    <Col className='col-4 open'>
-                        <h3>Done</h3>
+                    <Col className='col-4 open text-center'>
+                        <h3><FaRegCheckCircle /> Done</h3>
                         <Card className="text-center">
                             <Card.Title className="p-2" >This is some text within a card body. sdbFHHBDSs If it got really long it wouydld format...</Card.Title>
                         </Card>
+                        {doneTasks.map((task) => (
+                            <StyledTitleCard 
+                            task={task}
+                            handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                            />
+                        )
+                        )}
                     </Col>
                 </Row>
             </div >
-
+                        
             <Modal
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
@@ -332,7 +416,7 @@ const ProjectDash = (props) => {
                         <Form.Control name="description" type="text" placeholder="Describe The Task" />
                     </Form.Group>
                     <Row>
-                    <Col>
+                        <Col>
                             <Form.Group controlId="formTaskStart">
                                 <Form.Label>Task Start Date</Form.Label>
                                 <DatePicker
@@ -363,6 +447,14 @@ const ProjectDash = (props) => {
                             </Form.Group>
                         </Col>
                     </Row>
+                    <Form.Group controlId="formAssigned">
+                                <Form.Control required name='assigned_id' as="select"  >
+                                <option disabled selected value="">Assign the task</option>
+                                                {props.allUsers.map(assignee=><option value={assignee.id}>{assignee.name}</option>
+)}
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
+                            </Form.Group>
                     <Button block size="lg" variant="success" type="submit"  >
                         Create
                     </Button>
@@ -375,8 +467,6 @@ const ProjectDash = (props) => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered show={show2} onHide={handleClose2}>
                 {renderMainContent()}
-                <Button variant="outline-primary" onClick={() => setVisible(!visible)}  > Toggle readonly </Button>
-                        
             </Modal>
         </>
     );

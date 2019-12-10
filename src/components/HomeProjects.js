@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaPlusCircle, FaFilter } from 'react-icons/fa';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col, Card } from 'react-bootstrap'
 import { Redirect, useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 
@@ -11,7 +11,6 @@ const Projects = (props) => {
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
-    const [currentProject, setCurrentProject] = useState({})
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -22,7 +21,9 @@ const Projects = (props) => {
 
         setInput({
             ...input,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            startdate: startDate,
+            enddate: endDate
         })
     }
     const handleSubmit = (e) => {
@@ -83,7 +84,12 @@ const Projects = (props) => {
             <hr />
             <ul className="list" variant="flush">
                 {props.projects.map((project) => (
-                    <li className="listitem" onClick={() => history.push('/project/' + project.id)}> {project.title} </li>
+
+                    <Card className="task-card m-2 text-center">
+                        <Card.Title
+                            className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Title>
+                    </Card>
+                    // <li className="listitem" onClick={() => history.push('/project/' + project.id)}> {project.title} </li>
                 )
                 )}
             </ul>
@@ -134,14 +140,14 @@ const Projects = (props) => {
                             </Form.Group>
                         </Col>
                     </Row>
-                        <Button block size="lg" variant="success" type="submit"  >
-                            Create
+                    <Button block size="lg" variant="success" type="submit"  >
+                        Create
                     </Button>
                 </Form>
             </Modal>
         </>
-            );
-        }
-        
-        export default Projects
-        
+    );
+}
+
+export default Projects
+
