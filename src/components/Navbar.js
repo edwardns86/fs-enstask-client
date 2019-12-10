@@ -15,11 +15,13 @@ const Navi = (props) => {
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({})
     const [validated, setValidated] = useState(false);
-
+    const [tasks, setTasks] = useState([])
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        getTasks();
+        setShow(false)};
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
 
@@ -78,6 +80,19 @@ const Navi = (props) => {
                 enddate: null,
             })
             setValidated(false)  
+        }
+    }
+
+    const getTasks = async () => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/gettasks`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+        if (resp.ok) {
+            const data = await resp.json()
+            setTasks(data)
         }
     }
 

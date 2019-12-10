@@ -29,7 +29,6 @@ const Home = (props) => {
         getTasks();
     }, [])
 
-    console.log("current user",props.user)
     const getProjects = async () => {
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
             headers: {
