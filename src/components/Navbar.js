@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { Navbar, Nav, NavDropdown, Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { GoGraph, GoCalendar, GoSearch, GoChecklist } from "react-icons/go";
 import { FaHome, FaPlusCircle, FaUserCircle } from 'react-icons/fa';
@@ -19,12 +19,15 @@ const Navi = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
 
+    useEffect(() => {
+        getTasks();
+    }, [])
+
     const handleClose = () => {
         getTasks();
         setShow(false)};
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
-
 
         setInput({
             ...input,
