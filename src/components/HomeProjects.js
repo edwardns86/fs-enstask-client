@@ -56,7 +56,7 @@ const Projects = (props) => {
         }
         e.preventDefault()
         setValidated(true);
-        const resp = await fetch("https://127.0.0.1:5000/newproject", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/newproject`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

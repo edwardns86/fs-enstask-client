@@ -115,7 +115,7 @@ const ProjectDash = (props) => {
         }
         e.preventDefault()
         setValidated(true);
-        const resp = await fetch("https://127.0.0.1:5000/tasks", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/tasks`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ const ProjectDash = (props) => {
         }
         e.preventDefault()
         setValidated(true);
-        const resp = await fetch("https://127.0.0.1:5000/edittasks", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/edittasks`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ const ProjectDash = (props) => {
 
     const projectPage = async (id) => {
         console.log('test', id)
-        const resp = await fetch(`https://127.0.0.1:5000/project/${id}`, {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/project/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`

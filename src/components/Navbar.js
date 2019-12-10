@@ -60,7 +60,7 @@ const Navi = (props) => {
         }
         e.preventDefault()
         setValidated(true);
-        const resp = await fetch("https://127.0.0.1:5000/tasks", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/tasks`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

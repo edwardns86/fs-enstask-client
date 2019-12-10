@@ -15,7 +15,7 @@ const Register = (props) => {
     const registerUser = async (e) => {
         console.log('object', input)
         e.preventDefault()
-        const resp = await fetch("https://127.0.0.1:5000/register", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/register`, {
           method: "POST",
           headers: {
             'Content-Type': 'application/json'

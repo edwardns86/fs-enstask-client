@@ -31,7 +31,7 @@ const Home = (props) => {
 
     console.log("current user",props.user)
     const getProjects = async () => {
-        const resp = await fetch("https://127.0.0.1:5000/getprojects", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`
@@ -44,7 +44,7 @@ const Home = (props) => {
     }
 
     const getTasks = async () => {
-        const resp = await fetch("https://127.0.0.1:5000/gettasks", {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/gettasks`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`

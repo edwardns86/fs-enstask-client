@@ -21,7 +21,7 @@ function App() {
   }, [])
 
   const getUsers = async () => {
-    const resp = await fetch("https://127.0.0.1:5000/getusers", {
+    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getusers`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Token ${localStorage.getItem('token')}`
@@ -36,7 +36,7 @@ function App() {
 
 
   const doLogOut = async () => {
-    const resp = await fetch("https://127.0.0.1:5000/logout", {
+    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/logout`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Token ${localStorage.getItem('token')}`
@@ -58,7 +58,7 @@ function App() {
       window.location.search.split("=")[0] === "?api_key"
         ? window.location.search.split("=")[1]
         : null;
-    const resp = await fetch("https://127.0.0.1:5000/getuserinfo", {
+    const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getuserinfo`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Token ${existingToken || accessToken}`
