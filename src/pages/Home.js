@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Card, Container } from 'react-bootstrap';
+import { Row, Col, Modal, Card, Container , Button} from 'react-bootstrap';
 import Calendar from '../components/Calendar';
 import Projects from '../components/HomeProjects';
 import StyledTitleCard from '../components/StyledTitleCard';
@@ -7,6 +7,7 @@ import ColHeader from '../components/ColHeader'
 import Moment from 'react-moment';
 
 import { IoIosGlasses} from "react-icons/io";
+import {FaRegCopy, FaTrashAlt} from "react-icons/fa"
 
 
 const moment = require('moment');
@@ -17,8 +18,11 @@ const Home = (props) => {
     const [task, setTask] = useState([])
     const [tasks, setTasks] = useState([])
     const [show3, setShow3] = useState(false);
+    const [input, setInput] = useState([])
 
     const STW = moment().endOf('isoweek')
+    const SNW = moment().add(1, 'weeks').startOf('isoWeek')
+    const ENW = moment().add(1, 'weeks').endOf('isoWeek')
 
     useEffect(() => {
         getProjects();
@@ -59,7 +63,6 @@ const Home = (props) => {
     }
     const handleClose3 = () => setShow3(false);
 
-
     const handleClick = (task) => {
         setTask({
             id: task.id,
@@ -68,8 +71,10 @@ const Home = (props) => {
             startdate: task.startdate,
             enddate: task.enddate,
             status: task.status,
-            // name: task.props.user.name,
-            assignee_id: task.assignee_id,
+            name: task.assignee.name,
+            assignee_id: task.assignee.id,
+            project_title: task.project.title ,
+            project_id: task.project.id
         })
         handleShow3()
     }
@@ -85,10 +90,68 @@ const Home = (props) => {
         })
     }
 
+    const cloneTask = (task) => {
+        const input= ({
+            title: `${task.title} COPY`,
+            description: task.description,
+            startdate: SNW,
+            enddate: ENW,
+            status: "Open",
+            assigned_id: task.assignee_id,
+            project_title: task.project_title ,
+            project_id: task.project_id
+        })
+        createTask(input)
+    }
+
+    const createTask = async (input) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/tasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id: null, input })
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            getTasks()
+            handleClose3()
+        }
+    }
+
+    const deleteTask = async (id) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/deletetasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id:id})
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            getTasks()
+            handleClose3()
+        }
+    }
+
     const taskModal = (task) => {
         return (
             <Card>
-                <Card.Header className="d-flex justify-content-between" as="h3" >
+                <Card.Header className="d-flex justify-content-between" as="h4" >
                     <span><IoIosGlasses />{props.user.name}</span>
                     <span>{task.status}</span>
                 </Card.Header>
@@ -108,7 +171,7 @@ const Home = (props) => {
                         </Col>
                     </Row>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between" as="h3" ><span> </span></Card.Footer>
+                <Card.Footer className="d-flex justify-content-between" as="h4" ><Button onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
             </Card>
         )
     }
@@ -130,23 +193,14 @@ const Home = (props) => {
                 <Col className='m-0 p-0 home-task-feed col-3' >
                     <Container>
                     <h1>Tasks </h1>
-
                     <hr />
-                    <h2>CheckList</h2>
+                    {/* <h2>CheckList</h2>
                     <hr />
-                    <p> Create quick to dos and which can also become tasks </p>
+                    <p> Create quick to dos and which can also become tasks </p> */}
                     <h2> Due this Week </h2>
                     <hr />
                     <ColHeader />
                     {renderThisWeek(tasks)}
-                    {/* {tasks.map(task => {
-                                return (
-                                     // onClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id)} 
-                                    <Card className="task-card m-2 text-center">
-                                    <Card.Title 
-                                    className="p-2" >{task.title}</Card.Title>
-                                    </Card>
-                                )})} */}
                     <p>Show current user due tasks and any uncompleted highlighted</p>
                     </Container>
                 </Col>

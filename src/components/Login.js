@@ -14,7 +14,6 @@ const Login = (props) => {
 
     const login = async(e)=>{
         e.preventDefault()
-        console.log('process.env.REACT_APP_URL',input)
         const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/login` ,{
             method:"POST",
             headers:{

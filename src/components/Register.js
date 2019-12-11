@@ -6,14 +6,12 @@ const Register = (props) => {
     // [props.user, props.setUser] = useState({})
     const [input,setInput] = useState({})
     const handleOnChange = (e) => {
-        console.log(props.user)
         setInput({ ...input,
             [e.target.name]:e.target.value
         })
     }
 
     const registerUser = async (e) => {
-        console.log('object', input)
         e.preventDefault()
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/register`, {
           method: "POST",

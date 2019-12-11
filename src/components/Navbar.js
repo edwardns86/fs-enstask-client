@@ -7,20 +7,41 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const Navi = (props) => {
-    const k = window.location.pathname
-    const pId = window.location.pathname.split("/project/")[1]
-    console.log('===========', pId)
+    // const k = window.location.pathname
+    // const pId = window.location.pathname.split("/project/")[1]
+    // console.log('===========', pId)
     // WORK FROM HERE I HAVE THE ID OF A PROJECT FOR CREATING TASKS IN NAVBAR BUT NEED TO GUARD AGAINST null OR inocrrect ID
     const [show, setShow] = useState(false);
-    const [input, setInput] = useState({})
+    const [input, setInput] = useState({
+        title: "",
+        description: "",
+        status: "Open",
+    })
     const [validated, setValidated] = useState(false);
     const [tasks, setTasks] = useState([])
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [projects, setProjects] = useState([])
 
+    // useEffect(() => {
+    //     getTasks();
+    // }, [])
     useEffect(() => {
-        getTasks();
+        getProjects();
     }, [])
+
+    const getProjects = async () => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+        if (resp.ok) {
+            const data = await resp.json()
+            setProjects(data)
+        }
+    }
 
     const handleClose = () => {
         
@@ -35,8 +56,10 @@ const Navi = (props) => {
             enddate: endDate
         })
     }
+    
     const handleSubmit = (e) => {
         const form = e.currentTarget;
+        
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -45,6 +68,7 @@ const Navi = (props) => {
                 title: e.target.title.value,
                 description: e.target.description.value,
                 assigned_id: e.target.assigned_id.value,
+                project_id:e.target.project_id.value,
                 startdate: startDate,
                 enddate: endDate
             })
@@ -113,8 +137,8 @@ const Navi = (props) => {
                     <NavDropdown className="nav-add-task ml-5 mr-5" title={
                         <span><FaUserCircle /> </span>
                     } id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="/mytasks">View Your Tasks</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                        <NavDropdown.Item href="/mytasks">Your Tasks</NavDropdown.Item>
+                        <NavDropdown.Item href="/allprojects">All Projects</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={() => props.doLogOut(props.user.user_id)} >Logout</NavDropdown.Item>
@@ -133,7 +157,7 @@ const Navi = (props) => {
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered show={show} onHide={handleClose}>
-                <Form noValidate validated={validated} className="taskform" onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
+                <Form noValidate validated={validated} className="taskcreate" onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
                     <h4>Create a new task </h4>
                     <img className="mb-4" src="/client/src/images/Logo.png'" alt="" width="72" height="72" />
 
@@ -174,6 +198,7 @@ const Navi = (props) => {
                     <Row>
                         <Col>
                             <Form.Group controlId="formAssigned">
+                                <Form.Label>Assign To</Form.Label>
                                 <Form.Control required name='assigned_id' as="select"  >
                                 <option disabled selected value="">Assign the task</option>
                                                 {props.allUsers.map(assignee=><option value={assignee.id}>{assignee.name}</option>
@@ -181,7 +206,18 @@ const Navi = (props) => {
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
                             </Form.Group>
-                        </Col>
+                            </Col>
+                            <Col> 
+                            <Form.Group controlId="formProject">
+                                        <Form.Label>Project</Form.Label>
+                                        <Form.Control required name='project_id' as="select"  >
+                                        <option disabled selected value="">Choose a Project</option>
+                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            )}
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>
+                            </Form.Group>
+                            </Col>
                     </Row>
                     <Button block size="lg" variant="success" type="submit"  >
                         Create

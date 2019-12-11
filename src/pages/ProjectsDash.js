@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Card, Button, Modal, Form , ProgressBar} from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import {
     FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const ProjectDash = (props) => {
     const params = useParams()
+    const [projects, setProjects] = useState([])
     const [project, setProject] = useState(null)
     const [tasks, setTasks] = useState([])
     const [startDate, setStartDate] = useState(new Date());
@@ -25,6 +26,32 @@ const ProjectDash = (props) => {
     useEffect(() => {
         projectPage(params['id'])
     }, [])
+
+    const [input, setInput] = useState({
+        title: "",
+        description: "",
+        status: "Open",
+        // assigned_id: null,
+        // project_id: null,
+
+    })
+
+    useEffect(() => {
+        getProjects();
+    }, [])
+
+    const getProjects = async () => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+        if (resp.ok) {
+            const data = await resp.json()
+            setProjects(data)
+        }
+    }
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
@@ -45,36 +72,36 @@ const ProjectDash = (props) => {
 
     const [visible, setVisible] = useState(false)
 
-    const handleClick = (id, title, description, startdate, enddate, status, name, assignee_id) => {
-        setStartDate(new Date(startdate))
-        setEndDate(new Date(enddate))
+    const handleClick = (task) => {
+        setStartDate(new Date(task.startdate))
+        setEndDate(new Date(task.enddate))
         setTask({
-            id: id,
-            title: title,
-            description: description,
-            startdate: startdate,
-            enddate: enddate,
-            status: status,
-            name: name,
-            assignee_id: assignee_id,
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            startdate: task.startdate,
+            enddate: task.enddate,
+            status: task.status,
+            name: task.assignee.name,
+            assignee_id: task.assignee.id,
+            project_title: task.project.title,
+            project_id: task.project.id
         })
         setInput({
-            title: title,
-            description: description,
-            status: status,
-            startdate: startdate,
-            enddate: enddate,
-            name: name,
-            assigned_id: assignee_id,
+            title: task.title,
+            description: task.description,
+            status: task.status,
+            startdate: task.startdate,
+            enddate: task.enddate,
+            name: task.assignee.name,
+            assigned_id: task.assignee.id,
+            project_title: task.project.title,
+            project_id: task.project.id
         })
         handleShow2()
     }
-
-    const [input, setInput] = useState({
-        title: "",
-        description: "",
-        status: "Open"
-    })
+    
+    
     const handleOnChange = (e) => {
         setInput({
             ...input,
@@ -84,10 +111,10 @@ const ProjectDash = (props) => {
         })
     }
 
+    
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
-
+        
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -95,6 +122,8 @@ const ProjectDash = (props) => {
             setInput({
                 title: e.target.title.value,
                 description: e.target.description.value,
+                assigned_id: e.target.assigned_id.value,
+                project_id: e.target.project_id.value,
                 startdate: startDate,
                 enddate: endDate
             })
@@ -104,9 +133,7 @@ const ProjectDash = (props) => {
         return (createTask(e), handleClose())
     }
     const createTask = async (e) => {
-        console.log('input in create task', input)
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -135,10 +162,7 @@ const ProjectDash = (props) => {
     }
 
     const handleEditSubmit = (e) => {
-
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
-
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -157,9 +181,7 @@ const ProjectDash = (props) => {
     }
 
     const editTask = async (e, startDate, endDate) => {
-        console.log('input in edit task startDate and endDate', input, startDate, endDate)
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -188,7 +210,6 @@ const ProjectDash = (props) => {
     }
 
     const projectPage = async (id) => {
-        console.log('test', id)
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/project/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -198,7 +219,6 @@ const ProjectDash = (props) => {
         if (resp.ok) {
             const data = await resp.json()
             if (data.success) {
-                console.log('data LOIII ', data)
                 setProject(data.project)
                 if (data.tasks) {
                     setTasks(data.tasks)
@@ -206,6 +226,11 @@ const ProjectDash = (props) => {
             }
         }
     }
+
+    const totalTasks = tasks.filter(function (task) {
+        return task.status !== "Archived"
+    });
+
     const openTasks = tasks.filter(function (task) {
         return task.status === "Open";
     });
@@ -217,6 +242,8 @@ const ProjectDash = (props) => {
     const doneTasks = tasks.filter(function (task) {
         return task.status === "Done";
     });
+
+    console.log("done tasks length",doneTasks.length)
 
     if (!project) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
         <div className="spinner-border" role="status">
@@ -230,7 +257,7 @@ const ProjectDash = (props) => {
             return (
                 <>
                     <Card>
-                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                        <Card.Header className="d-flex justify-content-between" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -252,7 +279,7 @@ const ProjectDash = (props) => {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
                     </Card>
                 </>
             )
@@ -265,7 +292,7 @@ const ProjectDash = (props) => {
             <>
                 <Card>
                     <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
-                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                        <Card.Header className="d-flex justify-content-between" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -277,6 +304,16 @@ const ProjectDash = (props) => {
                                         <Form.Control.Feedback type="invalid">Every task needs a title!</Form.Control.Feedback>
                                         <Form.Control name="description" as="textarea" plaintext defaultValue={task.description} />
                                     </Form.Group >
+                                    <Form.Group controlId="formProject">
+                                        <Form.Label>Project</Form.Label>
+                                        <Form.Control name='project_id' as="select"  >
+                                            <option selected value={project.id}>{project.title}</option>
+                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            )}
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>
+                                    </Form.Group>
+                                    
                                 </Col>
                                 <Col className='col-4'>
                                     <Card.Text>
@@ -314,8 +351,8 @@ const ProjectDash = (props) => {
                                                 )}
                                             </Form.Control>
                                         </Form.Group>
-
                                         <Form.Group controlId="formAssigned">
+                                        <Form.Label>Assigned To</Form.Label>
                                             <Form.Control required name='assigned_id' as="select"  >
                                                 <option selected value={task.assignee_id}>{task.name}</option>
                                                 {props.allUsers.map(assignee => <option value={assignee.id}>{assignee.name}</option>
@@ -323,14 +360,11 @@ const ProjectDash = (props) => {
                                             </Form.Control>
                                             <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
                                         </Form.Group>
-
                                     </Card.Text>
-
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
-
+                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
                     </Form >
                 </Card>
             </>
@@ -345,6 +379,10 @@ const ProjectDash = (props) => {
                         <h1 > {project.title}  </h1>
                     </div>
                 </Row>
+                <Row>
+                    <Col className="col-6 offset-3"> <ProgressBar animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
+               
+                </Row>
                 <Row className='m-0' >
                     <Col className='col-4 open text-center'>
                         <h3> <FaRegLightbulb />Open</h3>
@@ -353,7 +391,7 @@ const ProjectDash = (props) => {
                             return (
                                 <StyledTitleCard 
                                 task={task}
-                                handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                                handleClick={() => handleClick(task) }
                                 />
                             )
                         })}
@@ -366,7 +404,7 @@ const ProjectDash = (props) => {
                         return (
                             <StyledTitleCard 
                             task={task}
-                            handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                            handleClick={() => handleClick(task) }
                             />
                         )
                         })}
@@ -378,7 +416,7 @@ const ProjectDash = (props) => {
                         {doneTasks.map((task) => (
                             <StyledTitleCard 
                             task={task}
-                            handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+                            handleClick={() => handleClick(task) }
                             />
                         )
                         )}
@@ -387,10 +425,11 @@ const ProjectDash = (props) => {
             </div >
                         
             <Modal
+                className="create-task-modal"
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered show={show} onHide={handleClose}>
-                <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
+                <Form noValidate validated={validated} className="taskcreate " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
                     <h4>Create a new task </h4>
                     <img
                         src="https://i.imgur.com/W9k8Ei6.png"
@@ -447,6 +486,15 @@ const ProjectDash = (props) => {
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
                             </Form.Group>
+                            <Form.Group controlId="formProject">
+                                        <Form.Label>Project</Form.Label>
+                                        <Form.Control name='project_id' as="select"  >
+                                        <option disabled selected value="">Choose a Project</option>
+                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            )}
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>
+                                    </Form.Group>
                     <Button block size="lg" variant="success" type="submit"  >
                         Create
                     </Button>

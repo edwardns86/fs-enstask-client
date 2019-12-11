@@ -4,12 +4,8 @@ import Moment from 'react-moment';
 var moment = require('moment');
 moment().format();
 
-
 const MTW = moment().startOf('isoWeek').toString();
 const STW = moment().endOf('isoweek').toString();
-console.log("moment times Monday then Sunday", {
-    MTW, STW
-});
 
 const Calendar = () => {
     return (

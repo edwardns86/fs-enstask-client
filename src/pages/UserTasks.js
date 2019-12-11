@@ -17,6 +17,7 @@ export default function UserTasks(props) {
     const [show2, setShow2] = useState(false);
     const [tasks, setTasks] = useState([])
     const [task, setTask] = useState([])
+    const [projects, setProjects] = useState([])
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [validated, setValidated] = useState(false);
@@ -28,8 +29,26 @@ export default function UserTasks(props) {
     })
 
     useEffect(() => {
+        getProjects();
+    }, [])
+
+    useEffect(() => {
         getTasks();
     }, [])
+
+
+    const getProjects = async () => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            }
+        })
+        if (resp.ok) {
+            const data = await resp.json()
+            setProjects(data)
+        }
+    }
 
     const handleClose2 = () => {
         setShow2(false);
@@ -37,11 +56,9 @@ export default function UserTasks(props) {
     }
     const handleShow2 = () => setShow2(true);
 
-
     const handleEditSubmit = (e) => {
 
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
 
         if (form.checkValidity() === false) {
             e.preventDefault()
@@ -61,9 +78,7 @@ export default function UserTasks(props) {
     }
 
     const editTask = async (e, startDate, endDate) => {
-        console.log('input in edit task startDate and endDate', input, startDate, endDate)
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
@@ -100,27 +115,31 @@ export default function UserTasks(props) {
         })
     }
 
-    const handleClick = (id, title, description, startdate, enddate, status, name, assignee_id) => {
-        setStartDate(new Date(startdate))
-        setEndDate(new Date(enddate))
+    const handleClick = (task) => {
+        setStartDate(new Date(task.startdate))
+        setEndDate(new Date(task.enddate))
         setTask({
-            id: id,
-            title: title,
-            description: description,
-            startdate: startdate,
-            enddate: enddate,
-            status: status,
-            name: name,
-            assignee_id: assignee_id,
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            startdate: task.startdate,
+            enddate: task.enddate,
+            status: task.status,
+            name: task.assignee.name,
+            assignee_id: task.assignee.id,
+            project_title: task.project.title,
+            project_id: task.project.id
         })
         setInput({
-            title: title,
-            description: description,
-            status: status,
-            startdate: startdate,
-            enddate: enddate,
-            name: name,
-            assigned_id: assignee_id,
+            title: task.title,
+            description: task.description,
+            status: task.status,
+            startdate: task.startdate,
+            enddate: task.enddate,
+            name: task.assignee.name,
+            assigned_id: task.assignee.id,
+            project_title: task.project.title,
+            project_id: task.project.id
         })
         handleShow2()
     }
@@ -137,6 +156,7 @@ export default function UserTasks(props) {
             setTasks(data.tasks)
         }
     }
+
     const openTasks = tasks.filter(function (task) {
         return task.status === "Open";
     });
@@ -154,7 +174,7 @@ export default function UserTasks(props) {
             return (
                 <>
                     <Card>
-                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                        <Card.Header className="d-flex justify-content-between" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -165,18 +185,17 @@ export default function UserTasks(props) {
                                     <Card.Text>
                                         {task.description}
                                     </Card.Text>
-                                    <Button variant="primary">Add a comment</Button>
+                                    <Button variant="primary">{task.project_title}</Button>
                                 </Col>
                                 <Col className='col-4'>
                                     <Card.Text>
                                         Start Date: <Moment format="DD/MM/YYYY">{task.startdate}</Moment>
                                         <h6>Deadline: <Moment fromNow>{task.enddate}</Moment></h6>
                                     </Card.Text>
-
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
                     </Card>
                 </>
             )
@@ -189,7 +208,7 @@ export default function UserTasks(props) {
             <>
                 <Card>
                     <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
-                        <Card.Header className="d-flex justify-content-between" as="h3" >
+                        <Card.Header className="d-flex justify-content-between" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -201,6 +220,16 @@ export default function UserTasks(props) {
                                         <Form.Control.Feedback type="invalid">Every task needs a title!</Form.Control.Feedback>
                                         <Form.Control name="description" as="textarea" plaintext defaultValue={task.description} />
                                     </Form.Group >
+                                    <Form.Group controlId="formProject">
+                                        <Form.Label>Project</Form.Label>
+                                        <Form.Control name='project_id' as="select"  >
+                                            <option selected value={task.project_id}>{task.project_title}</option>
+                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            )}
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>
+                                    </Form.Group>
+
                                 </Col>
                                 <Col className='col-4'>
                                     <Card.Text>
@@ -240,6 +269,7 @@ export default function UserTasks(props) {
                                         </Form.Group>
 
                                         <Form.Group controlId="formAssigned">
+                                            <Form.Label>Assigned To</Form.Label>
                                             <Form.Control required name='assigned_id' as="select"  >
                                                 <option selected value={task.assignee_id}>{task.name}</option>
                                                 {props.allUsers.map(assignee => <option value={assignee.id}>{assignee.name}</option>
@@ -253,7 +283,7 @@ export default function UserTasks(props) {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h3" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
 
                     </Form >
                 </Card>
@@ -263,51 +293,51 @@ export default function UserTasks(props) {
 
     return (
         <>
-        <div className="projectdash ">
-            <Row className='m-0 ' >
-                <div className="title" >
-                    <h1 > {props.user.name}  These are all your tasks</h1>
-                </div>
-            </Row>
-            <Row className='m-0' >
-                <Col className='col-4 open text-center'>
-                    <h3> <FaRegLightbulb />Open</h3>
-                    <ColHeader />
-                    {openTasks.map((task) => {
-                        return (
-                            <StyledTitleCard 
-                            task={task}
-                            handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
+            <div className="projectdash ">
+                <Row className='m-0 ' >
+                    <div className="title" >
+                        <h1 > {props.user.name}  These are all your tasks</h1>
+                    </div>
+                </Row>
+                <Row className='m-0' >
+                    <Col className='col-4 open text-center'>
+                        <h3> <FaRegLightbulb />Open</h3>
+                        <ColHeader />
+                        {openTasks.map((task) => {
+                            return (
+                                <StyledTitleCard
+                                    task={task}
+                                    handleClick={() => handleClick(task)}
+                                />
+                            )
+                        })}
+                        {/* <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button> */}
+                    </Col>
+                    <Col className='col-4 open text-center'>
+                        <h3> <FiActivity /> In Progress</h3>
+                        <ColHeader />
+                        {inProgressTasks.map((task) => (
+                            <StyledTitleCard
+                                task={task}
+                                handleClick={() => handleClick(task)}
                             />
                         )
-                    })}
-                    {/* <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button> */}
-                </Col>
-                <Col className='col-4 open text-center'>
-                    <h3> <FiActivity /> In Progress</h3>
-                    <ColHeader />
-                    {inProgressTasks.map((task) => (
-                        <StyledTitleCard 
-                        task={task}
-                        handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
-                        />
-                    )
-                    )}
+                        )}
 
-                </Col>
-                <Col className='col-4 open text-center'>
-                    <h3><FaRegCheckCircle /> Done</h3>
-                    <ColHeader />
-                    {doneTasks.map((task) => (
-                        <StyledTitleCard 
-                        task={task}
-                        handleClick={() => handleClick(task.id, task.title, task.description, task.startdate, task.enddate, task.status, task.assignee.name, task.assignee.id) }
-                        />
-                    )
-                    )}
-                </Col>
-            </Row>
-        </div >
+                    </Col>
+                    <Col className='col-4 open text-center'>
+                        <h3><FaRegCheckCircle /> Done</h3>
+                        <ColHeader />
+                        {doneTasks.map((task) => (
+                            <StyledTitleCard
+                                task={task}
+                                handleClick={() => handleClick(task)}
+                            />
+                        )
+                        )}
+                    </Col>
+                </Row>
+            </div >
 
             <Modal
                 className='modal2'

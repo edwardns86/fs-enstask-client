@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { FaPlusCircle, FaFilter } from 'react-icons/fa';
+import { FaPlusCircle, FaFilter, FaRegEye } from 'react-icons/fa';
 import { Modal, Button, Form, Row, Col, Card, Container } from 'react-bootstrap'
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 
 
@@ -29,13 +29,10 @@ const Projects = (props) => {
     }
     const handleSubmit = (e) => {
         const form = e.currentTarget;
-        console.log('form.checkValidity()', form.checkValidity())
-        console.log('input', input)
         if (form.checkValidity() === false) {
             e.preventDefault()
             e.stopPropagation();
             setValidated(true);
-            console.log('e-target', e.target.title.value)
             setInput({
                 title: e.target.title.value,
                 description: e.target.description.value,
@@ -80,12 +77,17 @@ const Projects = (props) => {
 
     return (
         <Container>
-            <h1>Projects</h1>
+            <h1 href="/allprojects" >Projects</h1>
             <h6>  <FaFilter /></h6>
-            <hr />
-            <Button variant="primary" onClick={handleShow}>
-                <FaPlusCircle /> Create a Project
+            <div>
+            <Button className="m-2" variant="primary" onClick={handleShow}>
+                <FaPlusCircle /> 
             </Button>
+            <Button className="m-2" variant="primary" href='/allprojects'>
+                <FaRegEye /> 
+            </Button>
+            </div>
+            <hr />
                 {props.projects.map((project) => (
 
                     <Card className="task-card  text-center">

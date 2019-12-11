@@ -5,10 +5,6 @@ import Moment from 'react-moment';
 import {FaRegLightbulb,FaRegCheckCircle} from 'react-icons/fa';
 import { FiActivity } from "react-icons/fi";
 
-
-
-
-
 const StyledCard = styled(Card)`
     color: ${props => props.status === "Done" ? "green" : props.status ==="In Progress" ? "blue" : "red"};
 
@@ -30,7 +26,7 @@ export default function StyledTitleCard(props) {
                     </Col>
                     <Col>
                     <Card.Body  className="p-2 align-right" >
-                        <Moment format="Do/MMM">{props.task.enddate}</Moment>  {icon()}</Card.Body>
+                        <Moment format="Do MMM">{props.task.enddate}</Moment>  {icon()}</Card.Body>
                     </Col>
                 </Row>
         </StyledCard>

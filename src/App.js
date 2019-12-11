@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import ProjectDash from './pages/ProjectsDash'
 import UserTasks from './pages/UserTasks'
 import SignIn from './pages/SignIn';
+import AllProjects from './pages/AllProjects'
 import { Row, Col } from 'react-bootstrap';
 import './App.css';
 
@@ -30,7 +31,6 @@ function App() {
     })
     if (resp.ok) {
         const data = await resp.json()
-        console.log('All users',data)
         setAllUsers(data)
     }
 }
@@ -102,10 +102,17 @@ function App() {
         user={user} />} />
 
         <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash 
+        user={user}
         allUsers={allUsers}
         {...projectPage} />} />
 
         <Route path = '/mytasks' render={() => <UserTasks 
+        user={user}
+        allUsers={allUsers}
+        />} 
+        />
+
+        <Route path = '/allprojects' render={() => <AllProjects
         user={user}
         allUsers={allUsers}
         />} 

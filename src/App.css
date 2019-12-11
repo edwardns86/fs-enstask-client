@@ -1,10 +1,14 @@
-App {
+.App {
   text-align: center;
   margin:0px;
   padding:0px;
   display: flex;
   background-color: #004CB6;
   color: #E0F1FF;
+  font-family: 'Montserrat', sans-serif;
+}
+.body{
+  font-family: 'Montserrat', sans-serif;
 }
 
 .projects {
@@ -91,6 +95,10 @@ text-align: center;
   padding: 0px;
 }
 
+.taskcreate {
+  padding: 20px
+}
+
 .task-card {
   width: 98%;
   margin: 4px;
@@ -120,3 +128,27 @@ text-align: center;
   text-align: left;
   color: black;
 }
+
+.project-card {
+  color : black;
+  margin: 30px;
+  min-width: 18rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.project-card:hover {
+  cursor: pointer;
+}
+
+.project-task-stats {
+  border-top: 1px solid red;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.project-card-footer {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
