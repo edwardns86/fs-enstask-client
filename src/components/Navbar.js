@@ -123,18 +123,20 @@ const Navi = (props) => {
 
     return (
         <>
-            <Navbar md={12} className='navbar' bg="light" expand="lg" >
+            <Navbar md={12} className='navbar align-middle' expand="lg"  >
                 <Navbar.Brand href="/"><img
-                    src="https://i.imgur.com/W9k8Ei6.png"
-                    width="30"
-                    height="30"
+                    src="/images/Logo.png"
+                    width="40"
+                    height="40"
                     className="d-inline-block align-top"
                     alt="logo"
-                />Hi, {props.user.name} </Navbar.Brand>
+                /></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav.Link className="nav-add-task ml-5" href="/"><FaHome /></Nav.Link>
-                    <NavDropdown className="nav-add-task ml-5 mr-5" title={
+                <Nav>
+                    <Nav.Link className=" ml-5" href="/">Hi, {props.user.name}</Nav.Link>
+                    <Nav.Link className=" ml-5" href="/"><FaHome /></Nav.Link>
+                    <NavDropdown className=" ml-5 mr-5" title={
                         <span><FaUserCircle /> </span>
                     } id="basic-nav-dropdown" >
                         <NavDropdown.Item href="/mytasks">Your Tasks</NavDropdown.Item>
@@ -143,12 +145,13 @@ const Navi = (props) => {
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={() => props.doLogOut(props.user.user_id)} >Logout</NavDropdown.Item>
                     </NavDropdown>
+                    </Nav>
                     <Nav className=" ml-auto">
-                        <Nav.Link className="nav-add-task ml-5" onClick={handleShow} href="#link"><FaPlusCircle /></Nav.Link>
-                        <Nav.Link className="nav-add-task ml-5" href="/stats"><GoGraph /></Nav.Link>
-                        <Nav.Link className="nav-add-task ml-5" href="/mytasks"><GoChecklist /></Nav.Link>
-                        <Nav.Link className="nav-add-task ml-5" href="/"><GoCalendar /></Nav.Link>
-                        <Nav.Link className="nav-add-task ml-5" href="#link"><GoSearch /></Nav.Link>
+                        <Nav.Link className=" ml-5" onClick={handleShow} href="#link"><FaPlusCircle /></Nav.Link>
+                        <Nav.Link className=" ml-5" href="/stats"><GoGraph /></Nav.Link>
+                        <Nav.Link className=" ml-5" href="/mytasks"><GoChecklist /></Nav.Link>
+                        <Nav.Link className=" ml-5" href="/"><GoCalendar /></Nav.Link>
+                        <Nav.Link className=" ml-5" href="#link"><GoSearch /></Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar >

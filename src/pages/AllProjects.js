@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Card, Container, Button, ProgressBar, CardDeck } from 'react-bootstrap';
+import { Row, Col, Modal, Card, Container, Button, ProgressBar, CardDeck, Jumbotron } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 import {FaRegLightbulb,FaRegCheckCircle, FaLongArrowAltRight} from 'react-icons/fa';
 import { FiActivity } from "react-icons/fi";
@@ -12,7 +12,7 @@ export default function AllProjects() {
     }, [])
     const [projects, setProjects] = useState([])
     const history = useHistory()
-    
+
     const getProjects = async () => {
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
             headers: {
@@ -27,17 +27,24 @@ export default function AllProjects() {
     }
     
     return (
-        <div className="display-flex">
-            <h1> All Projects </h1>
+        <div className="display-flex text-center">
+            <Jumbotron className="Jumbotron" fluid>
+                    <Container>
+                        <h1>All Projects </h1>
+                        <p>
+                        These are all the projects currently being worked on.
+                        </p>
+                    </Container>
+                </Jumbotron>
             <Container>
             <CardDeck> 
             {projects.map((project) => (
 
                 <Card onClick={() => history.push('/project/' + project.id)} className="project-card text-center">
-                    <Card.Header ><h4>{project.title}</h4></Card.Header>
-                        <Card.Body>{project.description}</Card.Body>
+                    <Card.Header className="project-card-header "><h4>{project.title}</h4></Card.Header>
+                        <Card.Body className="project-card-body">{project.description}</Card.Body>
                         
-                        <ProgressBar animated variant="success" now={project.task.filter((task) => task.status ==='Done').length / project.task.filter((task) => task.status !== "Archived").length*100} />
+                        <Card.Body className="project-card-body"><ProgressBar className="project-card-progress "animated variant="success" now={project.task.filter((task) => task.status ==='Done').length / project.task.filter((task) => task.status !== "Archived").length*100} /></Card.Body>
                             <Card.Body className="project-task-stats">
                                 <Row>
                                     <Col><h4><FaRegLightbulb/> : {project.task.filter((task) => task.status ==='Open').length}</h4></Col>

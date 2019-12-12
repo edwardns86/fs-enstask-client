@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Modal, Form , ProgressBar} from 'react-bootstrap';
+import { Row, Col, Card, Button, Modal, Form , ProgressBar, Jumbotron, Container} from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import {
     FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
-    FaRegLightbulb
+    FaRegLightbulb, FaLongArrowAltRight 
 } from 'react-icons/fa';
 import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
 import { FiActivity } from "react-icons/fi";
@@ -279,7 +279,7 @@ const ProjectDash = (props) => {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
                     </Card>
                 </>
             )
@@ -290,13 +290,13 @@ const ProjectDash = (props) => {
 
         return (
             <>
-                <Card>
-                    <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
-                        <Card.Header className="d-flex justify-content-between" as="h4" >
+                <Card className="modaltaskform ">
+                    <Form noValidate validated={validated} className="modaltaskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
+                        <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
-                        <Card.Body>
+                        <Card.Body className="modal-card-body">
                             <Row>
                                 <Col className='task-modal-left col-8'>
                                     <Form.Group controlId="formPlaintextEmail">
@@ -364,7 +364,7 @@ const ProjectDash = (props) => {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
                     </Form >
                 </Card>
             </>
@@ -374,14 +374,28 @@ const ProjectDash = (props) => {
     return (
         <>
             <div className="projectdash ">
-                <Row className='m-0 ' >
-                    <div className="title" >
-                        <h1 > {project.title}  </h1>
-                    </div>
-                </Row>
-                <Row>
-                    <Col className="col-6 offset-3"> <ProgressBar animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
-               
+                <Jumbotron className="Jumbotron" fluid>
+                    <Container>
+                        <h1>{project.title} </h1>
+                        <p>
+                        {project.description}
+                        </p>
+                        <Row>
+                            <Col className='col-5 text-center'>
+                                <h3><Moment format="Do MMM">{project.startdate}</Moment></h3>
+                            </Col>
+                            <Col className='col-2 text-center'> 
+                                <h3><FaLongArrowAltRight /></h3> 
+                            </Col>
+                            <Col className='col-5 text-center'>
+                                <h3><Moment format="Do MMM">{project.enddate}</Moment></h3>
+                            </Col>
+                        </Row>
+                       
+                    </Container>
+                </Jumbotron>
+                <Row className="p-4">
+                    <Col className="p-2 col-6 offset-3"><ProgressBar className="project-card-progress " animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
                 </Row>
                 <Row className='m-0' >
                     <Col className='col-4 open text-center'>

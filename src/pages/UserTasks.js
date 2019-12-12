@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Card, Button, Modal, Form , Container, Jumbotron} from 'react-bootstrap';
 import { useParams } from 'react-router-dom'
 import {
     FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
@@ -195,7 +195,7 @@ export default function UserTasks(props) {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
                     </Card>
                 </>
             )
@@ -283,7 +283,7 @@ export default function UserTasks(props) {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><IoIosArrowBack /></span> <Button type="submit" ><FaSave /> </Button></Card.Footer>
 
                     </Form >
                 </Card>
@@ -294,11 +294,14 @@ export default function UserTasks(props) {
     return (
         <>
             <div className="projectdash ">
-                <Row className='m-0 ' >
-                    <div className="title" >
-                        <h1 > {props.user.name}  These are all your tasks</h1>
-                    </div>
-                </Row>
+                <Jumbotron className="Jumbotron" fluid>
+                    <Container>
+                        <h1>{props.user.name} </h1>
+                        <p>
+                        Below you can view all tasks that are currently assigned to you. 
+                        </p>
+                    </Container>
+                </Jumbotron>
                 <Row className='m-0' >
                     <Col className='col-4 open text-center'>
                         <h3> <FaRegLightbulb />Open</h3>

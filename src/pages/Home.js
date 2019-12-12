@@ -171,7 +171,7 @@ const Home = (props) => {
                         </Col>
                     </Row>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between" as="h4" ><Button onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
+                <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><Button onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
             </Card>
         )
     }
@@ -201,7 +201,6 @@ const Home = (props) => {
                     <hr />
                     <ColHeader />
                     {renderThisWeek(tasks)}
-                    <p>Show current user due tasks and any uncompleted highlighted</p>
                     </Container>
                 </Col>
             </Row>

@@ -78,16 +78,17 @@ const Projects = (props) => {
     return (
         <Container>
             <h1 href="/allprojects" >Projects</h1>
+            <hr />
             <h6>  <FaFilter /></h6>
             <div>
-            <Button className="m-2" variant="primary" onClick={handleShow}>
+            <Button className="m-2" variant="outline-primary" onClick={handleShow}>
                 <FaPlusCircle /> 
             </Button>
-            <Button className="m-2" variant="primary" href='/allprojects'>
+            <Button className="m-2" variant="outline-primary" href='/allprojects'>
                 <FaRegEye /> 
             </Button>
             </div>
-            <hr />
+            
                 {props.projects.map((project) => (
 
                     <Card className="task-card  text-center">

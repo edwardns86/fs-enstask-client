@@ -6,8 +6,8 @@ import {FaRegLightbulb,FaRegCheckCircle} from 'react-icons/fa';
 import { FiActivity } from "react-icons/fi";
 
 const StyledCard = styled(Card)`
-    color: ${props => props.status === "Done" ? "green" : props.status ==="In Progress" ? "blue" : "red"};
-
+    background-color: ${props => props.status === "Done" ? "var(--main-green)" : props.status ==="In Progress" ? "var(--main-yellow)" : "var(--main-darkblue)"};
+    color: black;
 `;
 
 export default function StyledTitleCard(props) {
