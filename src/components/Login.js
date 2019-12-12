@@ -30,15 +30,16 @@ const Login = (props) => {
     }
 
     return (
-<Form onChange={e=>handleOnChange(e)} onSubmit={(e)=>login(e)}>
+<Form className="signin-form" onChange={e=>handleOnChange(e)} onSubmit={(e)=>login(e)}>
+    
     <h1>Login</h1>
     <img
-                        src="https://i.imgur.com/W9k8Ei6.png"
-                        width="100"
-                        height="100"
-                        className="d-inline-block align-top"
-                        alt="logo"
-                    />
+                    src="/images/Logo.png"
+                    width="100"
+                    height="100"
+                    className="d-inline-block align-top"
+                    alt="logo"
+                />
     <Form.Group controlId="formBasicEmail">
         <Form.Control type="email" name="email" placeholder="Enter email" />
     </Form.Group>
@@ -48,7 +49,7 @@ const Login = (props) => {
     <Button block size="lg" variant="success" type="submit">
         Login
     </Button>
-    <Button block size="lg" variant="danger" href='/register' >Register</Button>
+    <Button block size="lg" variant="primary" href='/register' >Register</Button>
     
 </Form>
     )

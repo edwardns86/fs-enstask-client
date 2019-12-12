@@ -197,7 +197,7 @@ const Home = (props) => {
                     {/* <h2>CheckList</h2>
                     <hr />
                     <p> Create quick to dos and which can also become tasks </p> */}
-                    <h2> Due this Week </h2>
+                    <h4> Due this Week </h4>
                     <hr />
                     <ColHeader />
                     {renderThisWeek(tasks)}

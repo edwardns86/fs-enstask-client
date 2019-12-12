@@ -197,11 +197,15 @@ text-align: center;
 }
 
 .logindiv {
-  background-color: #004CB6;
+  background-color: var(--main-dark-grey);
+}
+
+.signin-form {
+  text-align: center;
 }
 
 .login {
-  background-color: #95C595;
+  background-color: var(--main-blue);
   justify-content: center;
   margin: auto;
   padding: 40px;
@@ -338,4 +342,21 @@ text-align: center;
 .modal-card-footer {
   background-color: var(--main-dark-grey);
   margin:0px;
+}
+
+.login-button {
+  background-color: var(--main-green);
+}
+
+.register-button {
+  background-color: var(--main-green);
+}
+
+.tableheader{
+  background-color: var(--main-green);
+
+}
+
+.tablebody{
+  
 }

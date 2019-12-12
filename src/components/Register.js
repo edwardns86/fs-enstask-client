@@ -29,15 +29,15 @@ const Register = (props) => {
 
 
     return (
-<Form onChange={(e) => handleOnChange(e)}  onSubmit={(e) => registerUser(e)}>
+<Form className="signin-form" onChange={(e) => handleOnChange(e)}  onSubmit={(e) => registerUser(e)}>
     <h1>Register</h1>
     <img
-                        src="https://i.imgur.com/W9k8Ei6.png"
-                        width="100"
-                        height="100"
-                        className="d-inline-block align-top"
-                        alt="logo"
-                    />
+                    src="/images/Logo.png"
+                    width="100"
+                    height="100"
+                    className="d-inline-block align-top"
+                    alt="logo"
+                />
     <Row>
     <Col>
     <Form.Group controlId="formFirstname">
@@ -65,10 +65,10 @@ const Register = (props) => {
     </Form.Group>
     </Col>
     </Row>
-    <Button block size="lg" variant="success" type="submit">
-        Register !!!!!!!
+    <Button block size="lg" variant="success"type="submit">
+        Register
     </Button>
-    <Button block size="lg" variant="danger" href="/" >Login</Button>
+    <Button block size="lg" variant="primary" href="/">Login</Button>
 </Form>
     )
 }
