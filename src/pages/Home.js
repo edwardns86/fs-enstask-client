@@ -85,7 +85,7 @@ const Home = (props) => {
                 <StyledTitleCard
                     key={task.id}
                     task={task}
-                    handleClick={() => handleClick(task)}
+                    handleClick={handleClick}
                 />
             </>)
         })
