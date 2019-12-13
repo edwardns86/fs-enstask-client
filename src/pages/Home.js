@@ -9,7 +9,6 @@ import Moment from 'react-moment';
 import { IoIosGlasses} from "react-icons/io";
 import {FaRegCopy, FaTrashAlt} from "react-icons/fa"
 
-
 const moment = require('moment');
 moment().format();
 
@@ -154,8 +153,8 @@ const Home = (props) => {
 
     const taskModal = (task) => {
         return (
-            <Card>
-                <Card.Header className="d-flex justify-content-between" as="h4" >
+            <Card className="modaltaskform">
+                <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                     <span><IoIosGlasses />{props.user.name}</span>
                     <span>{task.status}</span>
                 </Card.Header>
@@ -175,7 +174,7 @@ const Home = (props) => {
                         </Col>
                     </Row>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><Button onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
+                <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
             </Card>
         )
     }

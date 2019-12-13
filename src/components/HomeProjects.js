@@ -79,13 +79,17 @@ const Projects = (props) => {
         <Container>
             <h1 href="/allprojects" >Projects</h1>
             <hr />
-            <h6>  <FaFilter /></h6>
+            <h4>All projects</h4> 
+            <hr />
             <div>
             <Button className="m-2" variant="outline-primary" onClick={handleShow}>
                 <FaPlusCircle /> 
             </Button>
             <Button className="m-2" variant="outline-primary" href='/allprojects'>
                 <FaRegEye /> 
+            </Button>
+            <Button className="m-2" variant="outline-primary" href='/'>
+            <FaFilter />
             </Button>
             </div>
             
@@ -102,9 +106,11 @@ const Projects = (props) => {
             
 
             <Modal
+                
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered show={show} onHide={handleClose}>
+                    
                 <Form noValidate validated={validated} className="projectform" onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
                     <h4>Create a new project </h4>
                     <img className="mb-4" src="/client/src/images/Logo.png'" alt="" width="72" height="72" />

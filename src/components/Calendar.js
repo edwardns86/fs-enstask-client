@@ -28,17 +28,11 @@ const Calendar = () => {
             key: 'https://docs.google.com/spreadsheets/d/1dOV5A9OmnIAwtf2Y-FJcKTrKQj7Ffj0iW6kahnV6F7g/edit?folder=0AOcF2TQEVfhzUk9PVA#gid=0',
             parseNumbers: true,
             callback: googleData => {
-                console.log('googleData', googleData)
                 setSalesData(googleData)
             },
             simpleSheet: true
         })
     }, [])
-
-    console.log(salesData)
-    console.log(salesData[0].Week)
-
-
 
     return (
         <>

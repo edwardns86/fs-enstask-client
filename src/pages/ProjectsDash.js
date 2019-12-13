@@ -3,7 +3,7 @@ import { Row, Col, Card, Button, Modal, Form , ProgressBar, Jumbotron, Container
 import { useParams } from 'react-router-dom'
 import {
     FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
-    FaRegLightbulb, FaLongArrowAltRight 
+    FaRegLightbulb, FaLongArrowAltRight , FaTrashAlt, FaRegCopy
 } from 'react-icons/fa';
 import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
 import { FiActivity } from "react-icons/fi";
@@ -11,8 +11,10 @@ import Moment from 'react-moment';
 import DatePicker from "react-datepicker";
 import StyledTitleCard from '../components/StyledTitleCard';
 import ColHeader from '../components/ColHeader'
-
 import "react-datepicker/dist/react-datepicker.css";
+
+
+
 
 const ProjectDash = (props) => {
     const params = useParams()
@@ -99,6 +101,28 @@ const ProjectDash = (props) => {
             project_id: task.project.id
         })
         handleShow2()
+    }
+
+    const deleteTask = async (id) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/deletetasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id:id})
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            projectPage(params['id'])
+            handleClose2()
+        }
     }
     
     
@@ -256,8 +280,8 @@ const ProjectDash = (props) => {
         if (!visible) {
             return (
                 <>
-                    <Card>
-                        <Card.Header className="d-flex justify-content-between" as="h4" >
+                    <Card className="modaltaskform">
+                        <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -279,7 +303,7 @@ const ProjectDash = (props) => {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => setVisible(!visible)}><FaEdit />Edit </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button> </Card.Footer>
                     </Card>
                 </>
             )
@@ -502,7 +526,7 @@ const ProjectDash = (props) => {
                             </Form.Group>
                             <Form.Group controlId="formProject">
                                         <Form.Label>Project</Form.Label>
-                                        <Form.Control name='project_id' as="select"  >
+                                        <Form.Control required name='project_id' as="select"  >
                                         <option disabled selected value="">Choose a Project</option>
                                             {projects.map(project => <option value={project.id}>{project.title}</option>
                                             )}

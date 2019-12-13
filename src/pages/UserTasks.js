@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button, Modal, Form , Container, Jumbotron} from 'react-bootstrap';
-import { useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import {
-    FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
-    FaRegLightbulb
+    FaRegCopy, FaEdit, FaRegCheckCircle, FaSave,
+    FaRegLightbulb, FaTrashAlt
 } from 'react-icons/fa';
 import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
 import { FiActivity } from "react-icons/fi";
@@ -14,6 +14,7 @@ import ColHeader from '../components/ColHeader'
 
 
 export default function UserTasks(props) {
+    const history = useHistory()
     const [show2, setShow2] = useState(false);
     const [tasks, setTasks] = useState([])
     const [task, setTask] = useState([])
@@ -27,6 +28,11 @@ export default function UserTasks(props) {
         description: "",
         status: "Open"
     })
+    const moment = require('moment');
+    moment().format();
+
+    const SNW = moment().add(1, 'weeks').startOf('isoWeek')
+    const ENW = moment().add(1, 'weeks').endOf('isoWeek')
 
     useEffect(() => {
         getProjects();
@@ -48,6 +54,20 @@ export default function UserTasks(props) {
             const data = await resp.json()
             setProjects(data)
         }
+    }
+
+    const cloneTask = (task) => {
+        const input= ({
+            title: `${task.title} COPY`,
+            description: task.description,
+            startdate: SNW,
+            enddate: ENW,
+            status: "Open",
+            assigned_id: task.assignee_id,
+            project_title: task.project_title ,
+            project_id: task.project_id
+        })
+        createTask(input)
     }
 
     const handleClose2 = () => {
@@ -103,6 +123,50 @@ export default function UserTasks(props) {
             })
             setValidated(false)
             getTasks()
+        }
+    }
+
+    const createTask = async (input) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/tasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id: null, input })
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            getTasks()
+            handleClose2()
+        }
+    }
+
+    const deleteTask = async (id) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/deletetasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id:id})
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            getTasks()
+            handleClose2()
         }
     }
 
@@ -173,8 +237,8 @@ export default function UserTasks(props) {
         if (!visible) {
             return (
                 <>
-                    <Card>
-                        <Card.Header className="d-flex justify-content-between" as="h4" >
+                    <Card className="modaltaskform">
+                        <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -185,7 +249,7 @@ export default function UserTasks(props) {
                                     <Card.Text>
                                         {task.description}
                                     </Card.Text>
-                                    <Button variant="primary">{task.project_title}</Button>
+                                    <Button variant="primary"onClick={() => history.push('/project/' + task.project_id)} >{task.project_title}</Button>
                                 </Col>
                                 <Col className='col-4'>
                                     <Card.Text>
@@ -195,7 +259,7 @@ export default function UserTasks(props) {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-between modal-card-footer" as="h4" ><span onClick={() => setVisible(!visible)}><FaEdit />Edit </span></Card.Footer>
+                        <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => setVisible(!visible)}><FaEdit />Edit </Button> <Button className="mr-2" onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button> </Card.Footer>
                     </Card>
                 </>
             )
@@ -206,9 +270,9 @@ export default function UserTasks(props) {
 
         return (
             <>
-                <Card>
+                <Card className="modaltaskform">
                     <Form noValidate validated={validated} className="taskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditSubmit(e)}>
-                        <Card.Header className="d-flex justify-content-between" as="h4" >
+                        <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                             <span><IoIosGlasses />{task.name}</span>
                             <span>{task.status}</span>
                         </Card.Header>
@@ -277,9 +341,7 @@ export default function UserTasks(props) {
                                             </Form.Control>
                                             <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
                                         </Form.Group>
-
                                     </Card.Text>
-
                                 </Col>
                             </Row>
                         </Card.Body>
