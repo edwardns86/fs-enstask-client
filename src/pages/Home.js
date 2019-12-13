@@ -62,7 +62,7 @@ const Home = (props) => {
         setShow3(true);
     }
     const handleClose3 = () => setShow3(false);
-
+    console.log("TASK OBJECT",task)
     const handleClick = (task) => {
         setTask({
             id: task.id,
@@ -83,6 +83,7 @@ const Home = (props) => {
         return tasks.map(task => {
             if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>
                 <StyledTitleCard
+                    key={task.id}
                     task={task}
                     handleClick={() => handleClick(task)}
                 />

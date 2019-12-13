@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Container } from 'react-bootstrap';
+import { Table, Container , Row, Col} from 'react-bootstrap';
 import { GiMoneyStack } from 'react-icons/gi';
 import { FaEtsy } from 'react-icons/fa';
 import Tabletop from 'tabletop';
 import {
-    XYPlot,
+    FlexibleXYPlot,
     XAxis,
     YAxis,
     VerticalGridLines,
@@ -40,7 +40,7 @@ const Calendar = () => {
             <div className='snapshot'>
                 <h1>Stats</h1>
                 <hr />
-                <Container>
+                <Container className="stat-container align-center">
                     <Table className="table-striped table-hover" responsive>
                         <thead className='tableheader'>
                             <tr>
@@ -65,8 +65,9 @@ const Calendar = () => {
                             }))}
                         </tbody>
                     </Table>
-
-                    <XYPlot margin={{ bottom: 70 }} xType="ordinal" width={300} height={300}>
+                    <Row>
+                        <Col>
+                    <FlexibleXYPlot className="barchart" margin={{ bottom: 70 }} xType="ordinal" width={450} height={300}>
                         <VerticalGridLines />
                         <HorizontalGridLines />
                         <XAxis tickLabelAngle={-45} />
@@ -82,9 +83,13 @@ const Calendar = () => {
                                 />
                             )
                         })}
-                    </XYPlot>
+                    </FlexibleXYPlot>
+                    </Col>
+                </Row>
+
+
                 </Container>
-                <h2>These can be graphs view or calendar view or clear/  if non super-admin</h2>
+                {/* <h2>These can be graphs view or calendar view or clear/  if non super-admin</h2>
                 <h2>Stats View</h2>
                 <p>last week sales </p>
                 <p>web traffic stats , conversion rates  </p>
@@ -94,7 +99,7 @@ const Calendar = () => {
                 <h2> Calendar View</h2>
                 <p>display a calendar with current projects on and start and completion dates</p>
                 <h2> User Tasks View</h2>
-                <p>Display all tasks for a user in all statuses</p>
+                <p>Display all tasks for a user in all statuses</p> */}
 
             </div>
         </>

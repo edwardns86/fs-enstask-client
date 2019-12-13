@@ -404,6 +404,7 @@ const ProjectDash = (props) => {
                         {openTasks.map((task) => {
                             return (
                                 <StyledTitleCard 
+                                key={task.id}
                                 task={task}
                                 handleClick={() => handleClick(task) }
                                 />
@@ -446,7 +447,7 @@ const ProjectDash = (props) => {
                 <Form noValidate validated={validated} className="taskcreate " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
                     <h4>Create a new task </h4>
                     <img
-                        src="https://i.imgur.com/W9k8Ei6.png"
+                        src="/images/Logo.png"
                         width="60"
                         height="60"
                         className="d-inline-block align-top"

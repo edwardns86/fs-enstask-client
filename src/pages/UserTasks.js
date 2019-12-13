@@ -309,6 +309,7 @@ export default function UserTasks(props) {
                         {openTasks.map((task) => {
                             return (
                                 <StyledTitleCard
+                                    key={task.id}
                                     task={task}
                                     handleClick={() => handleClick(task)}
                                 />
@@ -321,6 +322,7 @@ export default function UserTasks(props) {
                         <ColHeader />
                         {inProgressTasks.map((task) => (
                             <StyledTitleCard
+                                key={task.id}
                                 task={task}
                                 handleClick={() => handleClick(task)}
                             />
@@ -333,6 +335,7 @@ export default function UserTasks(props) {
                         <ColHeader />
                         {doneTasks.map((task) => (
                             <StyledTitleCard
+                                key={task.id}
                                 task={task}
                                 handleClick={() => handleClick(task)}
                             />

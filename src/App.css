@@ -193,6 +193,7 @@ text-align: center;
 .snapshot {
 background-color: var(--main-dark-grey);
 text-align: center;
+height:100%;
 
 }
 
@@ -354,9 +355,10 @@ text-align: center;
 
 .tableheader{
   background-color: var(--main-green);
-
 }
 
-.tablebody{
-  
+.stat-container{
+  text-align: center;
+  margin-left: auto;
 }
+
