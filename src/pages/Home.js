@@ -19,6 +19,7 @@ const Home = (props) => {
     const [tasks, setTasks] = useState([])
     const [show3, setShow3] = useState(false);
     const [input, setInput] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const STW = moment().endOf('isoweek')
     const SNW = moment().add(1, 'weeks').startOf('isoWeek')
@@ -33,6 +34,7 @@ const Home = (props) => {
     }, [])
 
     const getProjects = async () => {
+        
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -42,6 +44,7 @@ const Home = (props) => {
         if (resp.ok) {
             const data = await resp.json()
             setProjects(data)
+            setLoading(false)
         }
     }
 
@@ -62,7 +65,7 @@ const Home = (props) => {
         setShow3(true);
     }
     const handleClose3 = () => setShow3(false);
-    console.log("TASK OBJECT",task)
+    
     const handleClick = (task) => {
         setTask({
             id: task.id,
@@ -79,6 +82,7 @@ const Home = (props) => {
         handleShow3()
     }
 
+    console.log("TASK OBJECT",task)
     const renderThisWeek = (tasks) => {
         return tasks.map(task => {
             if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>
@@ -176,7 +180,11 @@ const Home = (props) => {
             </Card>
         )
     }
-
+    if (loading === true) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
+    <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+    </div>
+</div>
     return (
         <>
             <Row className='m-0' style={{ height: '90vh' }}>

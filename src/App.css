@@ -29,6 +29,7 @@ color:black;
 
 .navbar {
   background-color: #333333;
+  margin: 0px
 }
 
 .navbar-nav li a {

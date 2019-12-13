@@ -14,6 +14,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [allUsers, setAllUsers] = useState([])
   const history = useHistory()
+  const [loading, setLoading] = useState(true)
     ;
 
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
     if (resp.ok) {
         const data = await resp.json()
         setAllUsers(data)
+        setLoading(false)
     }
 }
 
@@ -70,10 +72,18 @@ function App() {
       const data = await resp.json()
       localStorage.setItem("token", data.token)
       setUser(data.user)
+      setLoading(false)
     } else {
       localStorage.clear("token")
+      setLoading(false)
     }
   }
+
+  if (loading === true) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
+  <div className="spinner-border" role="status">
+      <span className="sr-only">Loading...</span>
+  </div>
+  </div>
 
   if (!user) {
     return (
