@@ -391,14 +391,13 @@ const ProjectDash = (props) => {
                                 <h3><Moment format="Do MMM">{project.enddate}</Moment></h3>
                             </Col>
                         </Row>
-                       
                     </Container>
                 </Jumbotron>
-                <Row className="p-4">
-                    <Col className="p-2 col-6 offset-3"><ProgressBar className="project-card-progress " animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
+                <Row className="pt-2 pb-2 m-0">
+                    <Col xs={{span:8 ,offset:2}} md={{span:6 ,offset:3}} className="p-2 "><ProgressBar className="project-card-progress " animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
                 </Row>
                 <Row className='m-0' >
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3> <FaRegLightbulb />Open</h3>
                         <ColHeader />
                         {openTasks.map((task) => {
@@ -412,7 +411,7 @@ const ProjectDash = (props) => {
                         })}
                         <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button>
                     </Col>
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3> <FiActivity /> In Progress</h3>
                         <ColHeader />
                         {inProgressTasks.map((task) => {
@@ -425,7 +424,7 @@ const ProjectDash = (props) => {
                         })}
 
                     </Col>
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3><FaRegCheckCircle /> Done</h3>
                         <ColHeader />
                         {doneTasks.map((task) => (

@@ -303,7 +303,7 @@ export default function UserTasks(props) {
                     </Container>
                 </Jumbotron>
                 <Row className='m-0' >
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3> <FaRegLightbulb />Open</h3>
                         <ColHeader />
                         {openTasks.map((task) => {
@@ -317,7 +317,7 @@ export default function UserTasks(props) {
                         })}
                         {/* <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button> */}
                     </Col>
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3> <FiActivity /> In Progress</h3>
                         <ColHeader />
                         {inProgressTasks.map((task) => (
@@ -330,7 +330,7 @@ export default function UserTasks(props) {
                         )}
 
                     </Col>
-                    <Col className='col-4 open text-center'>
+                    <Col xs={12} md={4} className=' open text-center'>
                         <h3><FaRegCheckCircle /> Done</h3>
                         <ColHeader />
                         {doneTasks.map((task) => (

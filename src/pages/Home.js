@@ -188,19 +188,19 @@ const Home = (props) => {
     return (
         <>
             <Row className='m-0' style={{ height: '90vh' }}>
-                <Col className='col-3 m-0 p-0 projects ' >
-                    <Projects
+                <Col xs={{span: 12 , order:3}} md={{span:6 , order:1}} lg={{span:3 , order:1}} className=' m-0 p-0 projects ' >
+                    <Projects className='mb-4'
                         user={props.user}
                         projects={projects}
                         getProjects={getProjects}
                     />
                 </Col>
 
-                <Col className='m-0 p-0 col-6' >
-                    <Calendar />
+                <Col className='mb-4' xs={{span: 12 , order:2}} md={{span:12 , order:3}} lg={{span:6 , order:2}}className='m-0 p-0 ' >
+                    <Calendar  />
                 </Col>
-                <Col className='m-0 p-0 home-task-feed col-3' >
-                    <Container>
+                <Col xs={{span: 12 , order:1}} md={{span:6 , order:2}} lg={{span:3 , order:3}} className='m-0 p-0 home-task-feed' >
+                    <Container className='mb-4'>
                     <h1>Tasks </h1>
                     <hr />
                     {/* <h2>CheckList</h2>
