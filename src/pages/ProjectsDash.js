@@ -243,7 +243,7 @@ const ProjectDash = (props) => {
         return task.status === "Done";
     });
 
-    console.log("done tasks length",doneTasks.length)
+  
 
     if (!project) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
         <div className="spinner-border" role="status">

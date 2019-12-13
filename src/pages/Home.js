@@ -82,7 +82,6 @@ const Home = (props) => {
         handleShow3()
     }
 
-    console.log("TASK OBJECT",task)
     const renderThisWeek = (tasks) => {
         return tasks.map(task => {
             if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>

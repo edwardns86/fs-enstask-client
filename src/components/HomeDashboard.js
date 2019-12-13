@@ -10,7 +10,6 @@ const HomeDashBoard = () => {
         Tabletop.init({
             key: '1dOV5A9OmnIAwtf2Y-FJcKTrKQj7Ffj0iW6kahnV6F7',
             callback: googleData => {
-            console.log('google sheet data --->', googleData)
             },
             simpleSheet: true
         })
