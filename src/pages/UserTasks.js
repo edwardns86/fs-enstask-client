@@ -265,7 +265,7 @@ export default function UserTasks(props) {
             )
         }
 
-        const a = ["Open", "In Progress", "Done"].filter(e => e != task.status)
+        const a = ["Open", "In Progress", "Done"].filter(e => e !== task.status)
         // const allUsersFiltered = props.allUsers.filter(name => name != task.name)
 
         return (

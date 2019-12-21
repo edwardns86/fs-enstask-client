@@ -52,9 +52,10 @@ const ProjectDash = (props) => {
         if (resp.ok) {
             const data = await resp.json()
             setProjects(data)
+            
         }
     }
-
+    
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
@@ -71,6 +72,69 @@ const ProjectDash = (props) => {
         setVisible(false);
     }
     const handleShow2 = () => setShow2(true);
+
+// FUNCTIONS FOR THE EDIT PROJECT MODAL 
+    const handleShow3 = () => {
+        setStartDate(new Date(project.startdate))
+        setEndDate(new Date(project.enddate))
+        setInput({
+            title: project.title,
+            description: project.description,
+        })
+        setShow3(true);}
+    const [show3, setShow3] = useState(false);
+    const handleClose3 = () => {
+        setShow3(false);
+    }
+
+    const handleEditProjectSubmit = (e) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault()
+            e.stopPropagation();
+            setValidated(true);
+            return
+        }
+        e.preventDefault()
+        setInput({
+            title: e.target.title.value,
+            description: e.target.description.value,
+        })
+        return (editProject(e, startDate, endDate), handleClose3())
+    }
+
+    const editProject = async (e, startDate, endDate) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault()
+            e.stopPropagation();
+        }
+        e.preventDefault()
+        setValidated(true);
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/editprojects`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id: project.id, input, startDate, endDate })
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            setValidated(false)
+            projectPage(params['id'])
+        }
+    }
+
+
+// above all edit project functions 
+
 
     const [visible, setVisible] = useState(false)
 
@@ -135,7 +199,7 @@ const ProjectDash = (props) => {
         })
     }
 
-    
+    console.log("INPUT",input)
     const handleSubmit = (e) => {
         const form = e.currentTarget;
         
@@ -198,8 +262,6 @@ const ProjectDash = (props) => {
             title: e.target.title.value,
             description: e.target.description.value,
             status: e.target.status.value,
-            // startdate: startDate,
-            // enddate: endDate
         })
         return (editTask(e, startDate, endDate), handleClose2())
     }
@@ -250,6 +312,7 @@ const ProjectDash = (props) => {
             }
         }
     }
+    
 
     const totalTasks = tasks.filter(function (task) {
         return task.status !== "Archived"
@@ -415,6 +478,12 @@ const ProjectDash = (props) => {
                                 <h3><Moment format="Do MMM">{project.enddate}</Moment></h3>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col>
+                                <Button onClick={handleShow3}><FaEdit /></Button>
+                            </Col>
+                        </Row>
+
                     </Container>
                 </Jumbotron>
                 <Row className="pt-2 pb-2 m-0">
@@ -540,11 +609,69 @@ const ProjectDash = (props) => {
             </Modal>
 
             <Modal
-                className='modal2'
+                className='modal2 edit-task'
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered show={show2} onHide={handleClose2}>
                 {renderMainContent()}
+            </Modal>
+
+            <Modal
+                className='modal3 edit-project'
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered show={show3} onHide={handleClose3}>
+                <>
+                <Card className="modaltaskform ">
+                    <Form noValidate validated={validated} className="modaltaskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditProjectSubmit(e)}>
+                        <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
+                                            <span><IoIosGlasses />Edit {project.title}</span>
+                        </Card.Header>
+                        <Card.Body className="modal-card-body">
+                            <Row>
+                                <Col className='task-modal-left col-8'>
+                                    <Form.Group controlId="formPlaintextEmail">
+                                        <Form.Control required name="title" className='test h4' plaintext defaultValue={project.title} />
+                                        <Form.Control.Feedback type="invalid">Every project needs a title!</Form.Control.Feedback>
+                                        <Form.Control name="description" as="textarea" plaintext defaultValue={project.description} />
+                                    </Form.Group >
+                                </Col>
+                                <Col className='col-4'>
+                                    <Card.Text>
+                                        <Form.Group controlId="formProjectStart">
+                                            <Form.Label>Project Start Date</Form.Label>
+                                            <DatePicker
+                                                dateFormat="dd/MM/yyyy"
+                                                selected={startDate}
+                                                onChange={date => setStartDate(date)}
+                                                selectsStart
+                                                startDate={startDate}
+                                                endDate={endDate}
+                                                todayButton="Today"
+                                                locale="en-GB"
+                                            />
+                                        </Form.Group>
+                                        <Form.Group controlId="formProjectEnd">
+                                            <Form.Label>Project Deadline</Form.Label>
+                                            <DatePicker
+                                                dateFormat="dd/MM/yyyy"
+                                                selected={endDate}
+                                                onChange={date => setEndDate(date)}
+                                                selectsEnd
+                                                endDate={endDate}
+                                                minDate={startDate}
+                                                todayButton="Today"
+                                                locale="en-GB"
+                                            />
+                                        </Form.Group>
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                        <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" > <Button type="submit" ><FaSave /> </Button></Card.Footer>
+                    </Form >
+                </Card>
+            </>
             </Modal>
         </>
     );
