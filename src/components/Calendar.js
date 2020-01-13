@@ -97,7 +97,7 @@ const Calendar = () => {
                     <hr /> 
                     <h4>Last week tasks</h4>
                     <hr /> 
-                    <CircularProgressbar
+                    {/* <CircularProgressbar
                         value={percentage}
                         text={`${percentage}%`}
                         styles={buildStyles({
@@ -121,7 +121,7 @@ const Calendar = () => {
                             textColor: '#f88',
                             trailColor: '#d6d6d6',
                             backgroundColor: '#3e98c7',
-                        })}
+                        })} */}
                     />
 
                     
