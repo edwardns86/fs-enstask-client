@@ -124,7 +124,7 @@ const Calendar = () => {
                         })} 
                     /> */}
 
-                    
+                    <p>Coming soon a section of stats from last week.</p>
                     
                 </Container>
                 {/* <h2>These can be graphs view or calendar view or clear/  if non super-admin</h2>
