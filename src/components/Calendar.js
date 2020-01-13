@@ -121,8 +121,8 @@ const Calendar = () => {
                             textColor: '#f88',
                             trailColor: '#d6d6d6',
                             backgroundColor: '#3e98c7',
-                        })} */}
-                    />
+                        })} 
+                    /> */}
 
                     
                     
