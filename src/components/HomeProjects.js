@@ -10,11 +10,12 @@ import "react-datepicker/dist/react-datepicker.css";
 const Projects = (props) => {
     const history = useHistory()
     const [show, setShow] = useState(false);
-    const [input, setInput] = useState({})
+    
     const [validated, setValidated] = useState(false);
-
+    const [input, setInput] = useState({})
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -27,6 +28,8 @@ const Projects = (props) => {
             enddate: endDate
         })
     }
+
+    
     const handleSubmit = (e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -42,8 +45,11 @@ const Projects = (props) => {
             return
         }
         e.preventDefault()
+
         return (createProject(e), handleClose())
     }
+    console.log("Input e",input)
+
     const createProject = async (e) => {
 
         const form = e.currentTarget;
@@ -99,12 +105,9 @@ const Projects = (props) => {
                         <Card.Body
                             className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Body>
                     </Card>
-                    // <li className="listitem" onClick={() => history.push('/project/' + project.id)}> {project.title} </li>
                 )
                 )}
             
-            
-
             <Modal
                 
                 size="lg"

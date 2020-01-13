@@ -355,7 +355,7 @@ const ProjectDash = (props) => {
                                     <Card.Text>
                                         {task.description}
                                     </Card.Text>
-                                    <Button variant="primary">Add a comment</Button>
+                                    {/* <Button variant="primary">Add a comment</Button> A Feature to add.  */}
                                 </Col>
                                 <Col className='col-4'>
                                     <Card.Text>
