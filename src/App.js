@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom'
 import Navi from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import ProjectDash from './pages/ProjectsDash'
 import UserTasks from './pages/UserTasks'
@@ -129,6 +130,8 @@ function App() {
         />
 
       </Switch>    
+
+      <Footer />
 
     </>
   );
