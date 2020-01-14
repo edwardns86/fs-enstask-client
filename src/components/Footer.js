@@ -1,10 +1,11 @@
 import React from 'react'
 import { FaGoogleDrive } from "react-icons/fa";
-import {Button} from 'react-bootstrap';
+import {Button, Container} from 'react-bootstrap';
 
 export default function Footer() {
     return (
-        <div className="footer">
+        <div className="footer justify-content-md-center">
+            <Container>
             <h3>Useful Links</h3>
             <hr />
             <Button className="m-2" variant="outline-primary" href='https://drive.google.com/open?id=17ftLSiOAj6EIJABNfemvz8lLAAUDBCzm'>
@@ -16,6 +17,7 @@ export default function Footer() {
             <Button className="m-2" variant="outline-primary" href='https://docs.google.com/spreadsheets/d/1dOV5A9OmnIAwtf2Y-FJcKTrKQj7Ffj0iW6kahnV6F7g/edit?usp=sharing'>
                 <FaGoogleDrive /> Sales Data
             </Button>
+            </Container>
         </div>
     )
 }
