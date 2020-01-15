@@ -48,7 +48,6 @@ const Projects = (props) => {
 
         return (createProject(e), handleClose())
     }
-    console.log("Input e",input)
 
     const createProject = async (e) => {
 

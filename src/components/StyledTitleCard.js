@@ -18,6 +18,7 @@ export default function StyledTitleCard(props) {
 
     }
     
+
     return (
         <StyledCard status={props.task.status} onClick={() => props.handleClick(props.task)} className="task-card  ">
                 <Row>
@@ -25,8 +26,12 @@ export default function StyledTitleCard(props) {
                     <Card.Body  className="p-2 task-card-body" >{props.task.title} </Card.Body>
                     </Col>
                     <Col>
+                    <Row>
                     <Card.Body  className="p-2 align-right" >
-                        <Moment format="Do MMM">{props.task.enddate}</Moment>  {icon()}</Card.Body>
+                        <Moment format="Do MMM">{props.task.enddate}</Moment>  {icon()} </Card.Body></Row>
+                        <Row>
+                        <Card.Body  className="p-2 align-right" >{props.task.assignee.name}</Card.Body>
+                        </Row>
                     </Col>
                 </Row>
         </StyledCard>
