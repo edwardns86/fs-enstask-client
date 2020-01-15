@@ -217,6 +217,7 @@ export default function UserTasks(props) {
         })
         if (resp.ok) {
             const data = await resp.json()
+            data.tasks.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD'))
             setTasks(data.tasks)
         }
     }
