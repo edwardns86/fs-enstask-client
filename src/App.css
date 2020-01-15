@@ -25,7 +25,8 @@ Body{
 .projects {
 background-color: var(--main-light-grey);
 text-align: center;
-color:black;
+color:var(--main-black);
+padding-bottom: 30px;
 }
 
 .navbar {
@@ -186,6 +187,7 @@ color:black;
 .home-task-feed {
 background-color: var(--main-light-grey);
 text-align: center;
+padding-bottom: 30px;
 }
 
 .icon {
@@ -196,6 +198,7 @@ text-align: center;
 background-color: var(--main-dark-grey);
 text-align: center;
 height:100%;
+padding-bottom: 30px;
 
 }
 
@@ -280,7 +283,7 @@ height:100%;
 .task-card-body {
   text-justify: distribute;
   text-align: left;
-  color: black;
+  color: var(--main-black);
 }
 
 .task-card:hover {
@@ -292,18 +295,18 @@ height:100%;
   font-size: 1.1rem;
   width:98%;
   margin:4px;
-  text-decoration: underline  black;
+  text-decoration: underline  var(--main-black);
 }
 
 
 .task-header {
   text-justify: distribute;
   text-align: left;
-  color: black;
+  color: var(--main-black);
 }
 
 .project-card {
-  color : black;
+  color : var(--main-black);
   margin: 30px;
   min-width: 18rem;
   font-family: 'Montserrat', sans-serif;
@@ -370,7 +373,7 @@ height:100%;
 }
 
 .footer {
-  margin-top: 30px;
+  padding-top: 30px;
   text-align: center;
   background-color: var(--main-black);
   padding-bottom: 30px;

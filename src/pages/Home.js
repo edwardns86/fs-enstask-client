@@ -84,6 +84,7 @@ const Home = (props) => {
     }
 
     const renderThisWeek = (tasks) => {
+        tasks.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD')) 
         return tasks.map(task => {
             if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>
                 <StyledTitleCard
@@ -94,6 +95,7 @@ const Home = (props) => {
             </>)
         })
     }
+    
 
     const cloneTask = (task) => {
         const input= ({
@@ -188,7 +190,7 @@ const Home = (props) => {
 </div>
     return (
         <>
-            <Row className='m-0' style={{ height: 'auto' }}>
+            <Row className='m-0 ' style={{ height: 'auto' }}>
                 <Col xs={{span: 12 , order:3}} md={{span:6 , order:1}} lg={{span:3 , order:1}} className=' m-0 p-0 projects ' >
                     <Projects className='mb-4'
                         user={props.user}

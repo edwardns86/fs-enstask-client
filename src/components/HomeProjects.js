@@ -99,7 +99,7 @@ const Projects = (props) => {
             </div>
             
                 {props.projects.map((project) => (
-
+                    
                     <Card className="task-card  text-center">
                         <Card.Body
                             className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Body>

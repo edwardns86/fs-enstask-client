@@ -346,6 +346,7 @@ const ProjectDash = (props) => {
             if (data.success) {
                 setProject(data.project)
                 if (data.tasks) {
+                    data.tasks.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD')) 
                     setTasks(data.tasks)
                 }
             }
