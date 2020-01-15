@@ -139,9 +139,9 @@ const Navi = (props) => {
                     <NavDropdown className=" ml-5 mr-5" title={
                         <span><FaUserCircle /> </span>
                     } id="basic-nav-dropdown" >
-                        <NavDropdown.Item href="/mytasks">Your Tasks</NavDropdown.Item>
+                        <NavDropdown.Item href="/mytasks">My Tasks</NavDropdown.Item>
                         <NavDropdown.Item href="/allprojects">All Projects</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                        {/* <NavDropdown.Item href="#action/3.3">This Week</NavDropdown.Item> */}
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={() => props.doLogOut(props.user.user_id)} >Logout</NavDropdown.Item>
                     </NavDropdown>
