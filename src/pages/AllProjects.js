@@ -5,6 +5,8 @@ import {FaRegLightbulb,FaRegCheckCircle, FaLongArrowAltRight} from 'react-icons/
 import { FiActivity } from "react-icons/fi";
 import Moment from "react-moment"
 
+const moment = require('moment');
+moment().format();
 
 export default function AllProjects() {
     useEffect(() => {
@@ -22,12 +24,13 @@ export default function AllProjects() {
         })
         if (resp.ok) {
             const data = await resp.json()
+            data.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD'))
             setProjects(data)
         }
     }
     
     return (
-        <div className="display-flex text-center">
+        <div className="display-flex text-center ">
             <Jumbotron className="Jumbotron" fluid>
                     <Container>
                         <h1>All Projects </h1>
@@ -36,11 +39,11 @@ export default function AllProjects() {
                         </p>
                     </Container>
                 </Jumbotron>
-            <Container>
-            <CardDeck> 
+            <Container >
+            <CardDeck className="mb-4 "> 
             {projects.map((project) => (
 
-                <Card onClick={() => history.push('/project/' + project.id)} className="project-card text-center">
+                <Card onClick={() => history.push('/project/' + project.id)} key={project.id} className="project-card text-center">
                     <Card.Header className="project-card-header "><h4>{project.title}</h4></Card.Header>
                         <Card.Body className="project-card-body">{project.description}</Card.Body>
                         

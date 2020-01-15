@@ -102,7 +102,7 @@ const Projects = (props) => {
                     
                     <Card className="task-card  text-center">
                         <Card.Body
-                            className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Body>
+                            key={project.id} className="p-2" onClick={() => history.push('/project/' + project.id)}>{project.title}</Card.Body>
                     </Card>
                 )
                 )}

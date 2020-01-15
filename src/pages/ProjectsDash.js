@@ -529,8 +529,8 @@ const ProjectDash = (props) => {
                 <Row className="pt-2 pb-2 m-0">
                     <Col xs={{span:8 ,offset:2}} md={{span:6 ,offset:3}} className="p-2 "><ProgressBar className="project-card-progress " animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
                 </Row>
-                <Row className='m-0' >
-                    <Col xs={12} md={4} className=' open text-center'>
+                <Row className='m-0 project-row' >
+                    <Col xs={12} md={4} className=' open text-center h-auto'>
                         <h3> <FaRegLightbulb />Open</h3>
                         <ColHeader />
                         {openTasks.map((task) => {
@@ -542,14 +542,15 @@ const ProjectDash = (props) => {
                                 />
                             )
                         })}
-                        <Button variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button>
+                        <Button className="mb-4" variant="outline-primary" onClick={handleShow}  ><FaPlusCircle /> Task</Button>
                     </Col>
-                    <Col xs={12} md={4} className=' open text-center'>
+                    <Col xs={12} md={4} className=' open text-center h-auto'>
                         <h3> <FiActivity /> In Progress</h3>
                         <ColHeader />
                         {inProgressTasks.map((task) => {
                         return (
                             <StyledTitleCard 
+                            key={task.id}
                             task={task}
                             handleClick={() => handleClick(task) }
                             />
@@ -557,11 +558,12 @@ const ProjectDash = (props) => {
                         })}
 
                     </Col>
-                    <Col xs={12} md={4} className=' open text-center'>
+                    <Col xs={12} md={4} className=' open text-center h-auto'>
                         <h3><FaRegCheckCircle /> Done</h3>
                         <ColHeader />
                         {doneTasks.map((task) => (
                             <StyledTitleCard 
+                            key={task.id}
                             task={task}
                             handleClick={() => handleClick(task) }
                             />
@@ -628,7 +630,7 @@ const ProjectDash = (props) => {
                     <Form.Group controlId="formAssigned">
                                 <Form.Control required name='assigned_id' as="select"  >
                                 <option disabled selected value="">Assign the task</option>
-                                                {props.allUsers.map(assignee=><option value={assignee.id}>{assignee.name}</option>
+                                                {props.allUsers.map(assignee=><option key={assignee.id} value={assignee.id}>{assignee.name}</option>
 )}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
@@ -637,7 +639,7 @@ const ProjectDash = (props) => {
                                         <Form.Label>Project</Form.Label>
                                         <Form.Control required name='project_id' as="select"  >
                                         <option disabled selected value="">Choose a Project</option>
-                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            {projects.map(project => <option key={project.id} value={project.id}>{project.title}</option>
                                             )}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>

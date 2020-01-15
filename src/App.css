@@ -5,6 +5,10 @@ App {
   display: flex;
 }
 
+main > .container {
+  padding: 60px 15px 0;
+}
+
 :root {
 --main-black : #333333;
 --main-green : #95c595;
@@ -379,8 +383,11 @@ padding-bottom: 30px;
   padding-bottom: 30px;
 }
 .footer-title {
-  
   color: white;
   padding: 20px;
+}
+
+.project-row {
+  min-height: 50vh;
 }
 

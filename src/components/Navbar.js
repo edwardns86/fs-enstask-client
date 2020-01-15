@@ -204,7 +204,7 @@ const Navi = (props) => {
                                 <Form.Label>Assign To</Form.Label>
                                 <Form.Control required name='assigned_id' as="select"  >
                                 <option disabled selected value="">Assign the task</option>
-                                                {props.allUsers.map(assignee=><option value={assignee.id}>{assignee.name}</option>
+                                                {props.allUsers.map(assignee=><option key={assignee.id} value={assignee.id}>{assignee.name}</option>
 )}
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">Assign the task to someone</Form.Control.Feedback>
@@ -215,7 +215,7 @@ const Navi = (props) => {
                                         <Form.Label>Project</Form.Label>
                                         <Form.Control required name='project_id' as="select"  >
                                         <option disabled selected value="">Choose a Project</option>
-                                            {projects.map(project => <option value={project.id}>{project.title}</option>
+                                            {projects.map(project => <option key={project.id} value={project.id}>{project.title}</option>
                                             )}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">Assign the task to a Project</Form.Control.Feedback>

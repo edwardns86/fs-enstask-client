@@ -18,6 +18,9 @@ export default function Footer() {
             <Button className="m-2" variant="outline-primary" href='https://docs.google.com/spreadsheets/d/1dOV5A9OmnIAwtf2Y-FJcKTrKQj7Ffj0iW6kahnV6F7g/edit?usp=sharing'>
                 <FaGoogleDrive /> Sales Data
             </Button>
+            <Button className="m-2" variant="outline-primary" href='https://drive.google.com/open?id=0B0nLg3GrfIQhRTkzZFQwSlYwWjQ'>
+                <FaGoogleDrive /> Resized Images
+            </Button>
             </Container>
         </div>
     )
