@@ -54,8 +54,10 @@ const ProjectDash = (props) => {
         })
         if (resp.ok) {
             const data = await resp.json()
-            setProjects(data)
             
+            // data.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD'))
+            console.log("DATA ED ", data)
+            setProjects(data)
         }
     }
     
@@ -414,7 +416,7 @@ const ProjectDash = (props) => {
 
         const a = ["Open", "In Progress", "Done"].filter(e => e != task.status)
         // const allUsersFiltered = props.allUsers.filter(name => name != task.name)
-
+        
         return (
             <>
                 <Card className="modaltaskform ">
@@ -520,18 +522,30 @@ const ProjectDash = (props) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Button onClick={handleShow3}><FaEdit /></Button>
+                                <Button className="black-button" onClick={handleShow3}><FaEdit /></Button>
                             </Col>
                         </Row>
 
                     </Container>
                 </Jumbotron>
                 <Row className="pt-2 pb-2 m-0">
-                    <Col xs={{span:8 ,offset:2}} md={{span:6 ,offset:3}} className="p-2 "><ProgressBar className="project-card-progress " animated variant="success" now={doneTasks.length / totalTasks.length*100} /></Col>
+                    <Col xs={{span:8 ,offset:2}} md={{span:6 ,offset:3}} className="p-2 ">
+                        <ProgressBar>
+                                    <ProgressBar 
+                                    className="project-card-progress-1 " animated variant="info" now={openTasks.length / totalTasks.length*100} 
+                                    />
+                                    <ProgressBar 
+                                    className="project-card-progress-2 " animated variant="warning" now={inProgressTasks.length / totalTasks.length*100}
+                                    />
+                                    <ProgressBar 
+                                    className="project-card-progress-3 " animated variant="success" now={doneTasks.length / totalTasks.length*100} 
+                                    />
+                        </ProgressBar>
+                        </Col>
                 </Row>
                 <Row className='m-0 project-row' >
                     <Col xs={12} md={4} className=' open text-center h-auto'>
-                        <h3> <FaRegLightbulb />Open</h3>
+                        <h3> <FaRegLightbulb /> Open</h3>
                         <ColHeader />
                         {openTasks.map((task) => {
                             return (

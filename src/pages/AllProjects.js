@@ -47,15 +47,29 @@ export default function AllProjects() {
                     <Card.Header className="project-card-header "><h4>{project.title}</h4></Card.Header>
                         <Card.Body className="project-card-body">{project.description}</Card.Body>
                         
-                        <Card.Body className="project-card-body"><ProgressBar className="project-card-progress "animated variant="success" now={project.task.filter((task) => task.status ==='Done').length / project.task.filter((task) => task.status !== "Archived").length*100} /></Card.Body>
                             <Card.Body className="project-task-stats">
                                 <Row>
-                                    <Col><h4><FaRegLightbulb/> : {project.task.filter((task) => task.status ==='Open').length}</h4></Col>
-                                    <Col><h4><FiActivity />: {project.task.filter((task) => task.status ==='In Progress').length}</h4></Col>
-                                    <Col><h4><FaRegCheckCircle />  : {project.task.filter((task) => task.status ==='Done').length}</h4></Col>
+                                    <Col><h4><span className="open-icon"><FaRegLightbulb/></span> : {project.task.filter((task) => task.status ==='Open').length}</h4></Col>
+                                    <Col><h4><span className="inprogress-icon"><FiActivity /></span> : {project.task.filter((task) => task.status ==='In Progress').length}</h4></Col>
+                                    <Col><h4><span className="done-icon"><FaRegCheckCircle /></span>  : {project.task.filter((task) => task.status ==='Done').length}</h4></Col>
 
                                 </Row>
                             </Card.Body>
+                            <Card.Body className="progress-card-body">
+                                <ProgressBar>
+                                    <ProgressBar 
+                                    className="project-card-progress-1 " animated variant="info" now={project.task.filter((task) => task.status ==='Open').length / project.task.filter((task) => task.status !== "Archived").length*100} 
+                                    />
+                                    <ProgressBar 
+                                    className="project-card-progress-2 " animated variant="warning" now={project.task.filter((task) => task.status ==='In Progress').length / project.task.filter((task) => task.status !== "Archived").length*100} 
+                                    />
+                                    <ProgressBar 
+                                    className="project-card-progress-3 " animated variant="success" now={project.task.filter((task) => task.status ==='Done').length / project.task.filter((task) => task.status !== "Archived").length*100} 
+                                    />
+                                    
+                                </ProgressBar>
+                            </Card.Body>
+
                     <Card.Footer className="project-card-footer">
                         <Row>
                             <Col className='col-5 text-center'>
