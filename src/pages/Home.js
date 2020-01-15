@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom'
 import { Row, Col, Modal, Card, Container , Button} from 'react-bootstrap';
 import Calendar from '../components/Calendar';
 import Projects from '../components/HomeProjects';
@@ -13,6 +14,7 @@ const moment = require('moment');
 moment().format();
 
 const Home = (props) => {
+    const history = useHistory()
     const [projects, setProjects] = useState([])
     const [task, setTask] = useState([])
     const [tasks, setTasks] = useState([])
@@ -80,7 +82,7 @@ const Home = (props) => {
         })
         handleShow3()
     }
-
+    console.log("tasks data", tasks)
     const renderThisWeek = (tasks) => {
         return tasks.map(task => {
             if ((new Date(task.enddate) < STW._d && task.status==='Open') || (new Date(task.enddate) < STW._d && task.status==='In Progress')) return (<>
@@ -156,6 +158,7 @@ const Home = (props) => {
             <Card className="modaltaskform">
                 <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                     <span><IoIosGlasses />{props.user.name}</span>
+                    <span>{task.project_title}</span> 
                     <span>{task.status}</span>
                 </Card.Header>
                 <Card.Body>
@@ -174,7 +177,7 @@ const Home = (props) => {
                         </Col>
                     </Row>
                 </Card.Body>
-                <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
+                <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" variant="outline-primary" onClick={() => history.push('/project/' + task.project_id)}>View Project</Button> <Button className="mr-2" variant="outline-primary" onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button className="mr-2" variant="outline-primary" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button></Card.Footer>
             </Card>
         )
     }
@@ -185,7 +188,7 @@ const Home = (props) => {
 </div>
     return (
         <>
-            <Row className='m-0' style={{ height: '90vh' }}>
+            <Row className='m-0' style={{ height: 'auto' }}>
                 <Col xs={{span: 12 , order:3}} md={{span:6 , order:1}} lg={{span:3 , order:1}} className=' m-0 p-0 projects ' >
                     <Projects className='mb-4'
                         user={props.user}
@@ -201,16 +204,16 @@ const Home = (props) => {
                     <Container className='mb-4'>
                     <h1>Tasks </h1>
                     <hr />
-                    {/* <h2>CheckList</h2>
-                    <hr />
-                    <p> Create quick to dos and which can also become tasks </p> */}
                     <h4> Due this Week </h4>
                     <hr />
                     <ColHeader />
                     {renderThisWeek(tasks)}
                     </Container>
                 </Col>
+                
             </Row>
+
+            
             <Modal
                 className='modal2'
                 size="lg"

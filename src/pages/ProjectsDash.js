@@ -14,7 +14,8 @@ import ColHeader from '../components/ColHeader'
 import "react-datepicker/dist/react-datepicker.css";
 
 
-
+const moment = require('moment');
+moment().format();
 
 const ProjectDash = (props) => {
     const params = useParams()
@@ -24,6 +25,8 @@ const ProjectDash = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [validated, setValidated] = useState(false);
+    const SNW = moment().add(1, 'weeks').startOf('isoWeek')
+    const ENW = moment().add(1, 'weeks').endOf('isoWeek')
 
     useEffect(() => {
         projectPage(params['id'])
@@ -135,6 +138,42 @@ const ProjectDash = (props) => {
 
 // above all edit project functions 
 
+    const cloneTask = (task) => {
+        const input= ({
+            title: `${task.title} COPY`,
+            description: task.description,
+            startdate: SNW,
+            enddate: ENW,
+            status: "Open",
+            assigned_id: task.assignee_id,
+            project_title: task.project_title ,
+            project_id: task.project_id
+        })
+        createCloneTask(input)
+    }
+
+    const createCloneTask = async (input) => {
+        const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/tasks`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ id: null, input })
+        })
+        const data = await resp.json()
+        if (data.success) {
+            setInput({
+                title: '',
+                description: '',
+                startdate: null,
+                enddate: null,
+            })
+            projectPage(params['id'])
+        }
+    }
+    
+
 
     const [visible, setVisible] = useState(false)
 
@@ -199,7 +238,6 @@ const ProjectDash = (props) => {
         })
     }
 
-    console.log("INPUT",input)
     const handleSubmit = (e) => {
         const form = e.currentTarget;
         
@@ -220,6 +258,7 @@ const ProjectDash = (props) => {
         e.preventDefault()
         return (createTask(e), handleClose())
     }
+
     const createTask = async (e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -366,7 +405,7 @@ const ProjectDash = (props) => {
                                 </Col>
                             </Row>
                         </Card.Body>
-                        <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => setVisible(!visible)}><FaEdit />Edit </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button> </Card.Footer>
+                        <Card.Footer className="d-flex justify-content-end modal-card-footer" as="h4" ><Button className="mr-2" onClick={() => cloneTask(task)} ><FaRegCopy /> Clone </Button> <Button className="mr-2" onClick={() => setVisible(!visible)}><FaEdit />Edit </Button> <Button className="mr-2" onClick={() => deleteTask(task.id)} ><FaTrashAlt />Delete</Button> </Card.Footer>
                     </Card>
                 </>
             )

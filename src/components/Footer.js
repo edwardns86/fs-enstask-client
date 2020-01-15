@@ -4,10 +4,11 @@ import {Button, Container} from 'react-bootstrap';
 
 export default function Footer() {
     return (
-        <div className="footer justify-content-md-center">
-            <Container>
-            <h3>Useful Links</h3>
-            <hr />
+        <div >
+            <Container fluid='true' className="footer ">
+            
+            <h6 className="footer-title">Useful Links</h6>
+            
             <Button className="m-2" variant="outline-primary" href='https://drive.google.com/open?id=17ftLSiOAj6EIJABNfemvz8lLAAUDBCzm'>
                 <FaGoogleDrive /> Product Images 2020 
             </Button>

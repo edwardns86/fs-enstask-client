@@ -110,7 +110,8 @@ function App() {
       />
       <Switch>
         <Route exact path='/' render={() => <Home 
-        user={user} />} />
+        user={user} />} 
+        />
 
         <Route path = "/project/:id" render={(projectPage={projectPage}) => <ProjectDash 
         user={user}
@@ -128,10 +129,10 @@ function App() {
         allUsers={allUsers}
         />} 
         />
-
+        
       </Switch>    
-
       <Footer />
+      
 
     </>
   );

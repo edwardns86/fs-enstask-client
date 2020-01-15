@@ -6,6 +6,7 @@ App {
 }
 
 :root {
+--main-black : #333333;
 --main-green : #95c595;
 --main-blue : #aaddd6;
 --main-pink : #f19fa5;
@@ -366,5 +367,17 @@ height:100%;
 
 .barchart{
   margin-left: 20px;
+}
+
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  background-color: var(--main-black);
+  padding-bottom: 30px;
+}
+.footer-title {
+  
+  color: white;
+  padding: 20px;
 }
 
