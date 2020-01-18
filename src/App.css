@@ -435,3 +435,8 @@ color: var(--main-green)
   border-color: var(--main-green);
   
 }
+
+/* This formats the white space to create a paragraph etc. */
+div{
+  white-space: pre-wrap;
+}

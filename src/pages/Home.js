@@ -6,7 +6,7 @@ import Projects from '../components/HomeProjects';
 import StyledTitleCard from '../components/StyledTitleCard';
 import ColHeader from '../components/ColHeader'
 import Moment from 'react-moment';
-
+import ReactTextFormat from 'react-text-format';
 import { IoIosGlasses} from "react-icons/io";
 import {FaRegCopy, FaTrashAlt} from "react-icons/fa"
 
@@ -44,11 +44,11 @@ const Home = (props) => {
         })
         if (resp.ok) {
             const data = await resp.json()
+            data.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD'))
             setProjects(data)
             setLoading(false)
         }
     }
-
     const getTasks = async () => {
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/gettasks`, {
             headers: {
@@ -168,7 +168,7 @@ const Home = (props) => {
                         <Col className='task-modal-left col-8'>
                             <Card.Title>{task.title}</Card.Title>
                             <Card.Text>
-                                {task.description}
+                                <ReactTextFormat>{task.description} </ReactTextFormat>
                             </Card.Text>
                         </Col>
                         <Col className='col-4'>

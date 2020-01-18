@@ -5,6 +5,7 @@ import {
     FaPlusCircle, FaEdit, FaRegCheckCircle, FaSave,
     FaRegLightbulb, FaLongArrowAltRight , FaTrashAlt, FaRegCopy
 } from 'react-icons/fa';
+import ReactTextFormat from 'react-text-format';
 import { IoIosGlasses, IoIosArrowBack } from "react-icons/io";
 import { FiActivity } from "react-icons/fi";
 import Moment from 'react-moment';
@@ -44,7 +45,7 @@ const ProjectDash = (props) => {
     useEffect(() => {
         getProjects();
     }, [])
-
+    
     const getProjects = async () => {
         const resp = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/getprojects`, {
             headers: {
@@ -55,12 +56,11 @@ const ProjectDash = (props) => {
         if (resp.ok) {
             const data = await resp.json()
             
-            // data.sort((a,b) => moment(a.enddate).format('YYYYMMDD')- moment(b.enddate).format('YYYYMMDD'))
-            console.log("DATA ED ", data)
             setProjects(data)
         }
     }
-    
+   
+
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false);
@@ -395,7 +395,7 @@ const ProjectDash = (props) => {
                                 <Col className='task-modal-left col-8'>
                                     <Card.Title>{task.title}</Card.Title>
                                     <Card.Text>
-                                        {task.description}
+                                    <ReactTextFormat> {task.description} </ReactTextFormat>
                                     </Card.Text>
                                     {/* <Button variant="primary">Add a comment</Button> A Feature to add.  */}
                                 </Col>
