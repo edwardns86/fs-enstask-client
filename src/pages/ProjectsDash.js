@@ -85,6 +85,7 @@ const ProjectDash = (props) => {
         setInput({
             title: project.title,
             description: project.description,
+            status: project.status,
         })
         setShow3(true);}
     const [show3, setShow3] = useState(false);
@@ -104,6 +105,7 @@ const ProjectDash = (props) => {
         setInput({
             title: e.target.title.value,
             description: e.target.description.value,
+            status: e.target.status.value
         })
         return (editProject(e, startDate, endDate), handleClose3())
     }
@@ -719,6 +721,13 @@ const ProjectDash = (props) => {
                                                 todayButton="Today"
                                                 locale="en-GB"
                                             />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>Status</Form.Label>
+                                            <Form.Control name='status' as="select">
+                                                <option>Open</option>
+                                                <option>Complete</option>
+                                            </Form.Control>
                                         </Form.Group>
                                     </Card.Text>
                                 </Col>

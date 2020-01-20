@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaGoogleDrive, FaChrome } from "react-icons/fa";
+import { FaGoogleDrive, FaChrome, FaEtsy, FaEbay } from "react-icons/fa";
 import {Button, Container} from 'react-bootstrap';
 
 export default function Footer() {
@@ -10,6 +10,12 @@ export default function Footer() {
             <h6 className="footer-title">Useful Links</h6>
             <Button className="m-2" variant="outline-primary" href='https://edandsarna.com' target="_blank">
                 <FaChrome /> Edandsarna.com
+            </Button>
+            <Button className="m-2" variant="outline-primary" href='https://www.ebay.co.uk/' target="_blank">
+                <FaEbay /> eBay
+            </Button>
+            <Button className="m-2" variant="outline-primary" href='https://www.etsy.com/' target="_blank">
+                <FaEtsy /> Etsy
             </Button>
             <Button className="m-2" variant="outline-primary" href='https://drive.google.com/open?id=17ftLSiOAj6EIJABNfemvz8lLAAUDBCzm' target="_blank">
                 <FaGoogleDrive /> Product Images 2020 
@@ -23,6 +29,7 @@ export default function Footer() {
             <Button className="m-2" variant="outline-primary" href='https://drive.google.com/open?id=0B0nLg3GrfIQhRTkzZFQwSlYwWjQ' target="_blank">
                 <FaGoogleDrive /> Resized Images
             </Button>
+            
             </Container>
         </div>
     )
