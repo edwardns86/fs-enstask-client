@@ -39,7 +39,14 @@ const ProjectDash = (props) => {
         status: "Open",
         // assigned_id: null,
         // project_id: null,
+    })
 
+    const [projectInput, setProjectInput] = useState({
+        title: "",
+        description: "",
+        status: "Open",
+        // assigned_id: null,
+        // project_id: null,
     })
 
     useEffect(() => {
@@ -82,7 +89,7 @@ const ProjectDash = (props) => {
     const handleShow3 = () => {
         setStartDate(new Date(project.startdate))
         setEndDate(new Date(project.enddate))
-        setInput({
+        setProjectInput({
             title: project.title,
             description: project.description,
             status: project.status,
@@ -93,6 +100,7 @@ const ProjectDash = (props) => {
         setShow3(false);
     }
 
+    console.log("projectInput", projectInput)
     const handleEditProjectSubmit = (e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -102,7 +110,7 @@ const ProjectDash = (props) => {
             return
         }
         e.preventDefault()
-        setInput({
+        setProjectInput({
             title: e.target.title.value,
             description: e.target.description.value,
             status: e.target.status.value
@@ -124,19 +132,29 @@ const ProjectDash = (props) => {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ id: project.id, input, startDate, endDate })
+            body: JSON.stringify({ id: project.id, projectInput, startDate, endDate })
         })
         const data = await resp.json()
         if (data.success) {
-            setInput({
+            setProjectInput({
                 title: '',
                 description: '',
                 startdate: null,
                 enddate: null,
+                status: 'Open'
             })
             setValidated(false)
             projectPage(params['id'])
         }
+    }
+
+    const handleOnProjectChange = (e) => {
+        setProjectInput({
+            ...projectInput,
+            [e.target.name]: e.target.value,
+            startdate: startDate,
+            enddate: endDate
+        })
     }
 
 
@@ -231,7 +249,7 @@ const ProjectDash = (props) => {
             handleClose2()
         }
     }
-    
+   
     
     const handleOnChange = (e) => {
         setInput({
@@ -681,7 +699,7 @@ const ProjectDash = (props) => {
                 centered show={show3} onHide={handleClose3}>
                 <>
                 <Card className="modaltaskform ">
-                    <Form noValidate validated={validated} className="modaltaskform " onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleEditProjectSubmit(e)}>
+                    <Form noValidate validated={validated} className="modaltaskform " onChange={(e) => handleOnProjectChange(e)} onSubmit={(e) => handleEditProjectSubmit(e)}>
                         <Card.Header className="d-flex justify-content-between modal-card-header" as="h4" >
                                             <span><IoIosGlasses />Edit {project.title}</span>
                         </Card.Header>
