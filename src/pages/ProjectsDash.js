@@ -100,7 +100,6 @@ const ProjectDash = (props) => {
         setShow3(false);
     }
 
-    console.log("projectInput", projectInput)
     const handleEditProjectSubmit = (e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
@@ -249,7 +248,7 @@ const ProjectDash = (props) => {
             handleClose2()
         }
     }
-   
+
     
     const handleOnChange = (e) => {
         setInput({

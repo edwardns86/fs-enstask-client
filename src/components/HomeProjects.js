@@ -3,9 +3,12 @@ import { FaPlusCircle, FaFilter, FaRegEye } from 'react-icons/fa';
 import { Modal, Button, Form, Row, Col, Card, Container, Dropdown, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import DatePicker from "react-datepicker";
-
+import Moment from 'react-moment';
 
 import "react-datepicker/dist/react-datepicker.css";
+
+const moment = require('moment');
+moment().format();
 
 const Projects = (props) => {
     const history = useHistory()
@@ -15,8 +18,26 @@ const Projects = (props) => {
     const [input, setInput] = useState({})
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const ETM = moment().add(1, 'months').endOf('isoMonth')
 
+    // console.log("ETM", ETM)
+    
+    const openProjects = props.projects.filter(function (project) {
+        return project.status === "Open";
+    });
 
+    const completeProjects = props.projects.filter(function (project) {
+        return project.status === "Complete";
+    });
+
+    // const thirtyDayProjects = props.projects.filter(function (project) {
+    //     return project.enddate = project.enddate - ETM >= 0;
+    // });
+
+    const [displayProjects, setDisplayProjects] = useState(openProjects);
+    // console.log("thirtydayprojects", thirtyDayProjects)
+    // console.log("openProjects", openProjects)
+    // console.log("displayProjects", displayProjects)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleOnChange = (e) => {
@@ -80,13 +101,6 @@ const Projects = (props) => {
         }
     }
 
-    const openProjects = props.projects.filter(function (project) {
-        return project.status === "Open";
-    });
-
-    // const completeProjects = props.projects.filter(function (project) {
-    //     return props.project.status === "Complete";
-    // });
 
 
     return (
@@ -117,13 +131,14 @@ const Projects = (props) => {
                         </Button>
                         <Dropdown.Toggle split id="dropdown-split-basic" />
                         <Dropdown.Menu>
-                            <Dropdown.Item href="#/action-1">Completed Projects</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Ending This Month</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setDisplayProjects(openProjects)} >Open Projects</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setDisplayProjects(completeProjects)} >Completed Projects</Dropdown.Item>
+                            {/* <Dropdown.Item href="#/action-2">Ending In 30 Days</Dropdown.Item> */}
                         </Dropdown.Menu>
                     </Dropdown>
             </div>
 
-                {openProjects.map((project) => (
+                {displayProjects.map((project) => (
 
                     <Card className="task-card  text-center">
                         <Card.Body
