@@ -34,6 +34,8 @@ const Calendar = () => {
         })
     }, [])
 
+
+    console.log("sales Data ",salesData)
     return (
         <>
             <div className='snapshot'>
@@ -52,6 +54,7 @@ const Calendar = () => {
                                 <th>Week 2</th>
                                 <th>Week 3</th>
                                 <th>Week 4</th>
+                                <th>Week 5</th>
                             </tr>
                         </thead>
                         <tbody className='tablebody'>
@@ -63,6 +66,7 @@ const Calendar = () => {
                                         <td>£{week.wk2}</td>
                                         <td>£{week.wk3}</td>
                                         <td>£{week.wk4}</td>
+                                        <td>£{week.wk5}</td>
                                     </tr>
                                 )
                             }))}
@@ -86,6 +90,7 @@ const Calendar = () => {
                                                 { x: 'Week 2', y: p.wk2},
                                                 { x: 'Week 3', y: p.wk3},
                                                 { x: 'Week 4', y: p.wk4},
+                                                { x: 'Week 5', y: p.wk5},
                                             ]}
                                         />
                                     
