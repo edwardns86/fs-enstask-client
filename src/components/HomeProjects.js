@@ -34,13 +34,15 @@ const Projects = (props) => {
     //     return project.enddate = project.enddate - ETM >= 0;
     // });
 
+    console.log("input", input)
+    console.log("endDate", endDate)
     const [displayProjects, setDisplayProjects] = useState(openProjects);
     // console.log("thirtydayprojects", thirtyDayProjects)
     // console.log("openProjects", openProjects)
     // console.log("displayProjects", displayProjects)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleOnChange = (e) => {
+    const handleOnChange = (e , startDate, endDate) => {
 
         setInput({
             ...input,
@@ -51,7 +53,7 @@ const Projects = (props) => {
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e, startDate, endDate) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault()
@@ -86,7 +88,7 @@ const Projects = (props) => {
                 'Content-Type': 'application/json',
                 Authorization: `Token ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify(input)
+            body: JSON.stringify(input, startDate, endDate)
         })
         const data = await resp.json()
         if (data.success) {
@@ -122,9 +124,18 @@ const Projects = (props) => {
                         <FaPlusCircle />
                     </Button>
                     </OverlayTrigger>
+                    <OverlayTrigger
+                    placement="top"
+                    overlay={
+                        <Tooltip id="tooltip-view-projects">
+                            <strong>View All Projects</strong>.
+                            </Tooltip>
+                    }
+                >
                     <Button className="m-2" variant="outline-primary" href='/allprojects'>
                         <FaRegEye />
                     </Button>
+                    </OverlayTrigger>
                     <Dropdown as={ButtonGroup} className="m-2" variant="outline-primary">
                         <Button variant="outline-primary" href='/'>
                             <FaFilter />
@@ -153,19 +164,11 @@ const Projects = (props) => {
                     aria-labelledby="contained-modal-title-vcenter"
                     centered show={show} onHide={handleClose}>
 
-                    <Form noValidate validated={validated} className="projectform" onChange={(e) => handleOnChange(e)} onSubmit={(e) => handleSubmit(e)}>
+                    <Form noValidate validated={validated} className="projectform" onChange={(e) => handleOnChange(e, startDate, endDate)} onSubmit={(e) => handleSubmit(e, startDate, endDate)}>
                         <h4>Create a new project </h4>
                         <img className="mb-4" src="/client/src/images/Logo.png'" alt="" width="72" height="72" />
 
-                        <Form.Group controlId="formProjectTitle">
-                            <Form.Control required name="title" type="text" placeholder="Project Title (required)" />
-                            <Form.Control.Feedback type="invalid">Every project needs a title!</Form.Control.Feedback>
-                        </Form.Group>
-
-                        <Form.Group controlId="formProjectDescription">
-                            <Form.Control required name="description" type="text" placeholder="Describe The Project" />
-                            <Form.Control.Feedback type="invalid">Every project needs a description!</Form.Control.Feedback>
-                        </Form.Group>
+                        
                         <Row>
                             <Col>
                                 <Form.Group controlId="formProjectStart">
@@ -176,6 +179,8 @@ const Projects = (props) => {
                                         selectsStart
                                         startDate={startDate}
                                         endDate={endDate}
+                                        todayButton="Today"
+                                        locale="en-GB"
                                     />
                                 </Form.Group>
                             </Col>
@@ -188,10 +193,21 @@ const Projects = (props) => {
                                         selectsEnd
                                         endDate={endDate}
                                         minDate={startDate}
+                                        todayButton="Today"
+                                        locale="en-GB"
                                     />
                                 </Form.Group>
                             </Col>
                         </Row>
+                        <Form.Group controlId="formProjectTitle">
+                            <Form.Control required name="title" type="text" placeholder="Project Title (required)" />
+                            <Form.Control.Feedback type="invalid">Every project needs a title!</Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group controlId="formProjectDescription">
+                            <Form.Control required name="description" type="text" placeholder="Describe The Project" />
+                            <Form.Control.Feedback type="invalid">Every project needs a description!</Form.Control.Feedback>
+                        </Form.Group>
                         <Button block size="lg" variant="success" type="submit"  >
                             Create
                     </Button>

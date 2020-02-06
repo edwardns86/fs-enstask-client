@@ -440,3 +440,25 @@ color: var(--main-green)
 div{
   white-space: pre-wrap;
 }
+
+.circular-progress-bar {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.not-started {
+  color: var(--main-darkblue);
+  
+}
+
+.still-in-p{
+  color: var(--main-yellow);
+
+}
+
+.lwcomplete{
+  color: var(--main-green);
+
+}

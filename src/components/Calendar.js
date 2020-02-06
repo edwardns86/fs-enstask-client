@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Container, Row, Col } from 'react-bootstrap';
-import { GiMoneyStack } from 'react-icons/gi';
-import { FaEtsy } from 'react-icons/fa';
+import {FaRegLightbulb,FaRegCheckCircle} from 'react-icons/fa';
+import { FiActivity } from "react-icons/fi";
 import Tabletop from 'tabletop';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import {
@@ -17,11 +17,16 @@ var moment = require('moment');
 moment().format();
 
 const MTW = moment().startOf('isoWeek').toString();
-const STW = moment().endOf('isoweek').toString();
-const percentage = 66;
-const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
-const Calendar = () => {
+
+const FlexibleXYPlot = makeWidthFlexible(XYPlot);
+const STW = moment().endOf('isoweek')
+const SNW = moment().add(1, 'weeks').startOf('isoWeek')
+const ENW = moment().add(1, 'weeks').endOf('isoWeek')
+const SLW = moment().subtract(1, 'weeks').startOf('isoWeek')
+const ELW = moment().subtract(1, 'weeks').endOf('isoWeek')
+
+const Calendar = (props) => {
     const [salesData, setSalesData] = useState([{ platform: '', wk1: 100 }])
     useEffect(() => {
         Tabletop.init({
@@ -35,7 +40,56 @@ const Calendar = () => {
     }, [])
 
 
-    console.log("sales Data ",salesData)
+// TOTAL ARRAYS 
+const totalTasks = props.tasks.filter(function (task) {
+    return task.status !== "Archived"
+});
+
+const openTasks = props.tasks.filter(function (task) {
+    return task.status === "Open";
+});
+
+const inProgressTasks = props.tasks.filter(function (task) {
+    return task.status === "In Progress";
+});
+
+const doneTasks = props.tasks.filter(function (task) {
+    return task.status === "Done";
+});
+
+// LAST WEEK ARRAYS 
+
+const lwTotalTasks = totalTasks.filter(function (task){
+    if ((new Date(task.enddate) < ELW._d &&  new Date(task.enddate) > SLW._d) )
+    return <p>All last week</p>
+});
+
+const lwOpenTasks = openTasks.filter(function (task){
+    if ((new Date(task.enddate) < ELW._d &&  new Date(task.enddate) > SLW._d) )
+    return <p>Stil open</p>
+});
+
+const lwInProgressTasks = inProgressTasks.filter(function (task){
+    if ((new Date(task.enddate) < ELW._d &&  new Date(task.enddate) > SLW._d) )
+    return <p>Still in Progress</p>
+});
+
+const lwDoneTasks = doneTasks.filter(function (task){
+    if ((new Date(task.enddate) < ELW._d &&  new Date(task.enddate) > SLW._d) )
+    return <p>Completed</p>
+});
+
+const lwDoneTasksLength = (lwDoneTasks.length)
+const lwTotalTasksLength = (lwTotalTasks.length)
+const lwOpenTasksLength = (lwOpenTasks.length)
+const lwInProgressTasksLength = (lwInProgressTasks.length)
+
+const donePercentage = (lwDoneTasksLength*100/lwTotalTasksLength);
+
+const openPercentage = (lwOpenTasksLength*100/lwTotalTasksLength);
+
+const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
+
     return (
         <>
             <div className='snapshot'>
@@ -102,9 +156,29 @@ const Calendar = () => {
                     <hr /> 
                     <h4>Last week tasks</h4>
                     <hr /> 
-                    {/* <CircularProgressbar
-                        value={percentage}
-                        text={`${percentage}%`}
+                    <Container>
+                    {/* <Row>
+                        <Col className="not-started"><h4>Not Started</h4></Col>
+                        <Col className="still-in-p"><h4>Still In Progress</h4></Col>
+                        <Col className="lwcomplete"> <h4>Completed</h4></Col>
+                    </Row> */}
+                    <Row>
+                        <Col className="not-started" ><h4><FaRegLightbulb /></h4></Col>
+                        <Col className="still-in-p"><h4><FiActivity /></h4></Col>
+                        <Col className="lwcomplete"><h4><FaRegCheckCircle /></h4></Col>
+                    </Row>
+                    <Row>
+                        <Col className="not-started" ><h4>{lwOpenTasks.length}</h4></Col>
+                        <Col className="still-in-p"><h4>{lwInProgressTasks.length}</h4></Col>
+                        <Col className="lwcomplete"><h4>{lwDoneTasks.length}</h4></Col>
+                    </Row>
+                    </Container>
+                    <Container className="circular-progress-bar" >
+                    <Row>
+                        <Col>
+                        <CircularProgressbar
+                        value={openPercentage}
+                        text={`${openPercentage}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
@@ -122,14 +196,75 @@ const Calendar = () => {
                             // pathTransition: 'none',
 
                             // Colors
-                            pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
-                            textColor: '#f88',
+                            pathColor: `rgba(145, 173, 194, ${openPercentage / 100})`,
+                            textColor: '#91adc2',
                             trailColor: '#d6d6d6',
-                            backgroundColor: '#3e98c7',
+                            backgroundColor: '#95c595',
                         })} 
-                    /> */}
+                    />
+                        </Col>
+                        <Col>
+                        <CircularProgressbar
+                        value={inProgressPercentage}
+                        text={`${inProgressPercentage}%`}
+                        styles={buildStyles({
+                            // Rotation of path and trail, in number of turns (0-1)
+                            rotation: 0.25,
 
-                    <p>Coming soon a section of stats from last week.</p>
+                            // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                            strokeLinecap: 'butt',
+
+                            // Text size
+                            textSize: '16px',
+
+                            // How long animation takes to go from one percentage to another, in seconds
+                            pathTransitionDuration: 0.5,
+
+                            // Can specify path transition in more detail, or remove it entirely
+                            // pathTransition: 'none',
+
+                            // Colors
+                            pathColor: `rgba(245, 195, 108, ${inProgressPercentage / 100})`,
+                            textColor: '#f5c36c',
+                            trailColor: '#d6d6d6',
+                            backgroundColor: '#95c595',
+                        })} 
+                    />
+                        </Col>
+                        <Col>
+                        <CircularProgressbar
+                        value={donePercentage}
+                        text={`${donePercentage}%`}
+                        styles={buildStyles({
+                            // Rotation of path and trail, in number of turns (0-1)
+                            rotation: 0.25,
+
+                            // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                            strokeLinecap: 'butt',
+
+                            // Text size
+                            textSize: '16px',
+
+                            // How long animation takes to go from one percentage to another, in seconds
+                            pathTransitionDuration: 0.5,
+
+                            // Can specify path transition in more detail, or remove it entirely
+                            // pathTransition: 'none',
+
+                            // Colors
+                            pathColor: `rgba(149, 197, 149, ${donePercentage / 100})`,
+                            textColor: '#95c595',
+                            trailColor: '#d6d6d6',
+                            backgroundColor: '#95c595',
+                        })} 
+                    />
+                        </Col>
+                        
+                    </Row>    
+                    
+                    </Container>
+
+                    
                     
                 </Container>
                 {/* <h2>These can be graphs view or calendar view or clear/  if non super-admin</h2>

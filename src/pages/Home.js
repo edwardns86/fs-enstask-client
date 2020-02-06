@@ -200,7 +200,10 @@ const Home = (props) => {
                 </Col>
 
                 <Col className='mb-4' xs={{span: 12 , order:2}} md={{span:12 , order:3}} lg={{span:6 , order:2}}className='m-0 p-0 ' >
-                    <Calendar  />
+                    <Calendar  
+                    tasks = {tasks}
+
+                    />
                 </Col>
                 <Col xs={{span: 12 , order:1}} md={{span:6 , order:2}} lg={{span:3 , order:3}} className='m-0 p-0 home-task-feed' >
                     <Container className='mb-4'>

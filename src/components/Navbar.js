@@ -182,6 +182,8 @@ const Navi = (props) => {
                                     selectsStart
                                     startDate={startDate}
                                     endDate={endDate}
+                                    todayButton="Today"
+                                    locale="en-GB"
                                 />
                             </Form.Group>
                         </Col>
@@ -194,6 +196,8 @@ const Navi = (props) => {
                                     selectsEnd
                                     endDate={endDate}
                                     minDate={startDate}
+                                    todayButton="Today"
+                                    locale="en-GB"
                                 />
                             </Form.Group>
                         </Col>
