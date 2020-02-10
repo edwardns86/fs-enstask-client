@@ -98,7 +98,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                 <Container className="stat-container align-center">
                 <hr /> 
                     <Container>
-                        <h4>This month sales</h4> 
+                        <h4>Sales</h4> 
                         <hr />
                     <Table className="table-striped table-hover" responsive>
                         <thead className='tableheader'>
@@ -109,6 +109,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 <th>Week 3</th>
                                 <th>Week 4</th>
                                 <th>Week 5</th>
+                                <th>Week 6</th>
                             </tr>
                         </thead>
                         <tbody className='tablebody'>
@@ -121,6 +122,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                         <td>£{week.wk3}</td>
                                         <td>£{week.wk4}</td>
                                         <td>£{week.wk5}</td>
+                                        <td>£{week.wk6}</td>
                                     </tr>
                                 )
                             }))}
@@ -145,6 +147,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 3', y: p.wk3},
                                                 { x: 'Week 4', y: p.wk4},
                                                 { x: 'Week 5', y: p.wk5},
+                                                { x: 'Week 6', y: p.wk6},
                                             ]}
                                         />
                                     

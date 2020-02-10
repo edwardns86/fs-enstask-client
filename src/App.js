@@ -90,7 +90,7 @@ function App() {
     return (
       <div className="logindiv" >
         <Row style={{ height: '100vh',}}>
-          <Col className="login col-6" >
+          <Col xs={{span: 10 }} md={{span:8 }} lg={{span:6 }} className="login " >
             <SignIn
               user={user}
               setUser={setUser}
