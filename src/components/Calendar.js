@@ -110,6 +110,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 <th>Week 4</th>
                                 <th>Week 5</th>
                                 <th>Week 6</th>
+                                <th>Week 7</th>
                             </tr>
                         </thead>
                         <tbody className='tablebody'>
@@ -123,6 +124,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                         <td>£{week.wk4}</td>
                                         <td>£{week.wk5}</td>
                                         <td>£{week.wk6}</td>
+                                        <td>£{week.wk7}</td>
                                     </tr>
                                 )
                             }))}
@@ -148,6 +150,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 4', y: p.wk4},
                                                 { x: 'Week 5', y: p.wk5},
                                                 { x: 'Week 6', y: p.wk6},
+                                                { x: 'Week 7', y: p.wk7},
                                             ]}
                                         />
                                     
@@ -181,7 +184,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={openPercentage}
-                        text={`${openPercentage}%`}
+                        text={`${openPercentage.toFixed(1)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
@@ -209,7 +212,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={inProgressPercentage}
-                        text={`${inProgressPercentage}%`}
+                        text={`${inProgressPercentage.toFixed(1)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
@@ -237,7 +240,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={donePercentage}
-                        text={`${donePercentage}%`}
+                        text={`${donePercentage.toFixed(1)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
