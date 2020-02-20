@@ -184,7 +184,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={openPercentage}
-                        text={`${openPercentage.toFixed(1)}%`}
+                        text={`${openPercentage.toFixed(0)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
@@ -212,7 +212,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={inProgressPercentage}
-                        text={`${inProgressPercentage.toFixed(1)}%`}
+                        text={`${inProgressPercentage.toFixed(0)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
@@ -240,7 +240,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <Col>
                         <CircularProgressbar
                         value={donePercentage}
-                        text={`${donePercentage.toFixed(1)}%`}
+                        text={`${donePercentage.toFixed(0)}%`}
                         styles={buildStyles({
                             // Rotation of path and trail, in number of turns (0-1)
                             rotation: 0.25,
