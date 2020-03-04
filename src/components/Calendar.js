@@ -104,15 +104,15 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <thead className='tableheader'>
                             <tr>
                                 <th>Platform</th>
-                                <th>Week 1</th>
-                                <th>Week 2</th>
-                                <th>Week 3</th>
-                                <th>Week 4</th>
-                                <th>Week 5</th>
-                                <th>Week 6</th>
-                                <th>Week 7</th>
-                                <th>Week 8</th>
                                 <th>Week 9</th>
+                                <th>Week 8</th>
+                                <th>Week 7</th>
+                                <th>Week 6</th>
+                                <th>Week 5</th>
+                                <th>Week 4</th>
+                                <th>Week 3</th>
+                                <th>Week 2</th>
+                                <th>Week 1</th>
                             </tr>
                         </thead>
                         <tbody className='tablebody'>
@@ -120,15 +120,15 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 return (
                                     <tr>
                                         <td>{week.platform}</td>
-                                        <td>£{week.wk1}</td>
-                                        <td>£{week.wk2}</td>
-                                        <td>£{week.wk3}</td>
-                                        <td>£{week.wk4}</td>
-                                        <td>£{week.wk5}</td>
-                                        <td>£{week.wk6}</td>
-                                        <td>£{week.wk7}</td>
-                                        <td>£{week.wk8}</td>
                                         <td>£{week.wk9}</td>
+                                        <td>£{week.wk8}</td>
+                                        <td>£{week.wk7}</td>
+                                        <td>£{week.wk6}</td>
+                                        <td>£{week.wk5}</td>
+                                        <td>£{week.wk4}</td>
+                                        <td>£{week.wk3}</td>
+                                        <td>£{week.wk2}</td>
+                                        <td>£{week.wk1}</td>
                                     </tr>
                                 )
                             }))}
