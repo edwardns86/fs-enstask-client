@@ -391,6 +391,8 @@ const ProjectDash = (props) => {
         return task.status === "Done";
     });
 
+    const orderChange = doneTasks.sort((a,b) => moment(b.enddate).format('YYYYMMDD')- moment(a.enddate).format('YYYYMMDD'))
+
   
 
     if (!project) return <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh' }}>
@@ -594,7 +596,7 @@ const ProjectDash = (props) => {
                     <Col xs={12} md={4} className=' open text-center h-auto'>
                         <h3><FaRegCheckCircle /> Done</h3>
                         <ColHeader />
-                        {doneTasks.map((task) => (
+                        {orderChange.map((task) => (
                             <StyledTitleCard 
                             key={task.id}
                             task={task}

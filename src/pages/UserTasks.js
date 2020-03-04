@@ -235,6 +235,8 @@ export default function UserTasks(props) {
         return task.status === "Done";
     });
 
+    const orderChange = doneTasks.sort((a,b) => moment(b.enddate).format('YYYYMMDD')- moment(a.enddate).format('YYYYMMDD'))
+
     const renderMainContent = () => {
         if (!visible) {
             return (
@@ -397,7 +399,7 @@ export default function UserTasks(props) {
                     <Col xs={12} md={4} className=' open text-center'>
                         <h3><FaRegCheckCircle /> Done</h3>
                         <ColHeader />
-                        {doneTasks.map((task) => (
+                        {orderChange.map((task) => (
                             <StyledTitleCard
                                 key={task.id}
                                 task={task}
