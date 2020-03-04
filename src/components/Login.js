@@ -49,7 +49,7 @@ const Login = (props) => {
     <Button block size="lg" variant="success" type="submit">
         Login
     </Button>
-    <Button block size="lg" variant="primary" href='/register' >Register</Button>
+    {/* <Button block size="lg" variant="primary" href='/register' >Register</Button> */}
     
 </Form>
     )
