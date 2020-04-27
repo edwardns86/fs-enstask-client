@@ -104,6 +104,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <thead className='tableheader'>
                             <tr>
                                 <th>Platform</th>
+                                <th>Week 17</th>
                                 <th>Week 16</th>
                                 <th>Week 15</th>
                                 <th>Week 14</th>
