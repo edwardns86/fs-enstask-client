@@ -127,6 +127,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 return (
                                     <tr>
                                         <td>{week.platform}</td>
+                                        <td>£{week.wk17}</td>
                                         <td>£{week.wk16}</td>
                                         <td>£{week.wk15}</td>
                                         <td>£{week.wk14}</td>
@@ -178,6 +179,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 14', y: p.wk14},
                                                 { x: 'Week 15', y: p.wk15},
                                                 { x: 'Week 16', y: p.wk16},
+                                                { x: 'Week 17', y: p.wk17},
                                             ]}
                                         />
                                     
