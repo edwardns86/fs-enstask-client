@@ -36,9 +36,10 @@ const Calendar = (props) => {
                 setSalesData(googleData)
             },
             simpleSheet: true
+    
         })
     }, [])
-
+console.log("tabletop", googleData)
 
 // TOTAL ARRAYS 
 const totalTasks = props.tasks.filter(function (task) {
@@ -79,6 +80,8 @@ const lwDoneTasks = doneTasks.filter(function (task){
     return <p>Completed</p>
 });
 
+
+
 const lwDoneTasksLength = (lwDoneTasks.length)
 const lwTotalTasksLength = (lwTotalTasks.length)
 const lwOpenTasksLength = (lwOpenTasks.length)
@@ -104,6 +107,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <thead className='tableheader'>
                             <tr>
                                 <th>Platform</th>
+                                <th>Week 20</th>
                                 <th>Week 19</th>
                                 <th>Week 18</th>
                                 <th>Week 17</th>
@@ -130,6 +134,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 return (
                                     <tr>
                                         <td>{week.platform}</td>
+                                        <td>£{week.wk20}</td>
                                         <td>£{week.wk19}</td>
                                         <td>£{week.wk18}</td>
                                         <td>£{week.wk17}</td>
@@ -187,6 +192,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 17', y: p.wk17},
                                                 { x: 'Week 18', y: p.wk18},
                                                 { x: 'Week 19', y: p.wk19},
+                                                { x: 'Week 20', y: p.wk20},
                                             ]}
                                         />
                                     
