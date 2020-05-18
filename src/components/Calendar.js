@@ -39,7 +39,7 @@ const Calendar = (props) => {
     
         })
     }, [])
-console.log("tabletop", googleData)
+console.log("tabletop", salesData)
 
 // TOTAL ARRAYS 
 const totalTasks = props.tasks.filter(function (task) {
