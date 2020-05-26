@@ -195,7 +195,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 18', y: p.wk18},
                                                 { x: 'Week 19', y: p.wk19},
                                                 { x: 'Week 20', y: p.wk20},
-                                                { x: 'Week 21', y: p.wk20},
+                                                { x: 'Week 21', y: p.wk21},
                                             ]}
                                         />
                                     
