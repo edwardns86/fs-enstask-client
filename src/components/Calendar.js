@@ -107,6 +107,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <thead className='tableheader'>
                             <tr>
                                 <th>Platform</th>
+                                <th>Week 24</th>
                                 <th>Week 23</th>
                                 <th>Week 22</th>
                                 <th>Week 21</th>
@@ -137,6 +138,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 return (
                                     <tr>
                                         <td>{week.platform}</td>
+                                        <td>£{week.wk24}</td>
                                         <td>£{week.wk23}</td>
                                         <td>£{week.wk22}</td>
                                         <td>£{week.wk21}</td>
@@ -202,6 +204,7 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 21', y: p.wk21},
                                                 { x: 'Week 22', y: p.wk22},
                                                 { x: 'Week 23', y: p.wk23},
+                                                { x: 'Week 24', y: p.wk24},
                                             ]}
                                         />
                                     
