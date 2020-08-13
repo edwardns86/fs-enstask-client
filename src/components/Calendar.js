@@ -107,6 +107,13 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                         <thead className='tableheader'>
                             <tr>
                                 <th>Platform</th>
+                                <th>Week 33</th>
+                                <th>Week 32</th>
+                                <th>Week 31</th>
+                                <th>Week 30</th>
+                                <th>Week 29</th>
+                                <th>Week 28</th>
+                                <th>Week 27</th>
                                 <th>Week 26</th>
                                 <th>Week 25</th>
                                 <th>Week 24</th>
@@ -140,6 +147,13 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                 return (
                                     <tr>
                                         <td>{week.platform}</td>
+                                        <td>£{week.wk33}</td>
+                                        <td>£{week.wk32}</td>
+                                        <td>£{week.wk31}</td>
+                                        <td>£{week.wk30}</td>
+                                        <td>£{week.wk29}</td>
+                                        <td>£{week.wk28}</td>
+                                        <td>£{week.wk27}</td>
                                         <td>£{week.wk26}</td>
                                         <td>£{week.wk25}</td>
                                         <td>£{week.wk24}</td>
@@ -211,6 +225,13 @@ const inProgressPercentage = (lwInProgressTasksLength*100/lwTotalTasksLength);
                                                 { x: 'Week 24', y: p.wk24},
                                                 { x: 'Week 25', y: p.wk25},
                                                 { x: 'Week 26', y: p.wk26},
+                                                { x: 'Week 27', y: p.wk27},
+                                                { x: 'Week 28', y: p.wk28},
+                                                { x: 'Week 29', y: p.wk29},
+                                                { x: 'Week 30', y: p.wk30},
+                                                { x: 'Week 31', y: p.wk31},
+                                                { x: 'Week 32', y: p.wk32},
+                                                { x: 'Week 33', y: p.wk33},
                                             ]}
                                         />
                                     
